@@ -1,6 +1,6 @@
 from heapq import heapify, heappop, heappush
 import random
-
+#feito
 def menu_principal():
     opcao = input("\nBem vindo! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
 
@@ -16,7 +16,7 @@ def menu_principal():
     elif opcao == "4":
         encerrar()              
     
-
+#feito
 def ajuda_caminho():
     from heapq import heapify, heappop, heappush
 
@@ -175,7 +175,7 @@ def ajuda_caminho():
     distancias = G.menores_caminhos(input("\nDigite a Estação que você está: "), input("\nDigite a Estação para qual você quer ir: "))
     print("\nSiga nas seguintes estações: \n", distancias)
 
-    menu_principal()
+    pergunta()
 
 #feito
 def duvida_lotacao():
@@ -198,27 +198,44 @@ def duvida_lotacao():
     # Exibição das informações
     print(f"\nA lotação de cada vagão é:\nVagão 1 = {vag_1}%\nVagão 2 = {vag_2}%\nVagão 3 = {vag_3}%\nVagão 4 = {vag_4}%\nVagão 5 = {vag_5}%\nVagão 6 = {vag_6}%\nVagão 7 = {vag_7}%\nVagão 8 = {vag_8}% \n \nA chegada do próximo trem está prevista para {tempo_chegada_min} minutos e {tempo_chegada_seg} segundos\n")
 
+    pergunta()
 
+#feito
 def duvidas_frequentes():
-    print ("duvida_frequente")
-    exit()
-    # pass
+    duvida = input("\nSelecione uma dentre as opções \n1- Horário de funcionamento \n2- Compra de bilhetes \n3- Frequência de Trens \n4- Opções de integração \n5- Atendimento ao Cliente \nQual seria sua dúvida?: ")
 
+    while duvida.isnumeric() == False or (duvida != "1" and duvida != "2" and duvida != "3" and duvida != "4" and duvida != "5"):
+        duvida = input("\nOpção inválida \nPor favor, selecione uma das opções apresentadas\n1- Horário de funcionamento \n2- Compra de bilhetes \n3- Frequência de Trens \n4- Opções de integração \n5- Atendimento ao Cliente \nQual seria sua dúvida?:  ")
 
+    if duvida == "1":
+     print ("\nHorário Geral: Das 4h até às 23:59 \nObservações: \n - Este horário pode ser prolongado em ocasiões especiais \n - Em feriados, este horário pode ser reduzido\n")
+    elif duvida == "2":
+     print ("\nTarifa: \n - A tarifa é de R$5, mas pode sofrer alteraçõs em casos de reajuste \n \nComo Comprar Passagens:\n - Máquinas Automáticas: Disponíveis em todas as estações, permitem a compra de bilhetes. \n - Bilheteiras: Algumas estações possuem bilheteiras onde você pode comprar passagens diretamente com uma pessoa\n")
+    elif duvida == "3":
+     print ("\nLinha 7-Rubi: Intervalos de 6 a 15 minutos, dependendo do horário.\nLinha 8-Diamante: Pode variar entre 5 a 12 minutos.\nLinha 9-Esmeralda: Intervalos menores durante o pico, entre 4 e 8 minutos.\nLinha 10-Turquesa: Intervalos variam entre 5 a 12 minutos.\nLinha 11-Coral: Uma das mais movimentadas, com intervalos menores nos horários de pico, cerca de 3 a 6 minutos.\nLinha 12-Safira: Intervalos variam de 5 a 15 minutos, dependendo do horário.\nLinha 13-Jade: Frequência menor, com intervalos que podem chegar a 20 ou 30 minutos, principalmente fora dos horários de pico.\n \nPara ter uma informação mais aproximada da chegada do seu trem, volte no nosso menu principal e selecione a opção 2\n")
+    elif duvida == "4":
+     print ("\nBilhete Único: Integração com ônibus municipais da SPTrans e com o Metrô, permitindo combinações entre os meios de transporte pagando uma tarifa reduzida.\nMetrô: Integração direta com as linhas do Metrô nas estações Brás, Luz, Tatuapé, Barra Funda e Santo Amaro.\nÔnibus Intermunicipais (EMTU): Algumas estações da CPTM oferecem integração com linhas de ônibus intermunicipais gerenciadas pela EMTU, especialmente nas regiões metropolitanas.\nCiclovias e Bicicletários: Várias estações oferecem bicicletários gratuitos, além de ciclovias conectadas a algumas estações, facilitando a integração bicicleta-trem.\nTrens Metropolitanos: A Linha 13-Jade tem integração com o Aeroporto de Guarulhos, facilitando o transporte para a região aeroportuária.\n")
+    elif duvida == "5":
+     print ("\nCentral de Atendimento: Disponível pelo telefone 0800-055-0121, funcionando 24 horas por dia para dúvidas, sugestões ou reclamações.\nFale Conosco: Formulário disponível no site oficial da CPTM para contato direto com o serviço de atendimento ao cliente.\nOuvidoria: Para casos que necessitam de uma resolução mais específica ou reclamações formais, a ouvidoria pode ser acessada pelo telefone ou pela internet.\nRedes Sociais: A CPTM também oferece atendimento ao cliente e informações em tempo real através de suas contas oficiais no Twitter e Facebook.\nPostos de Atendimento Presencial: Algumas estações possuem postos físicos de atendimento ao cliente para resolver questões relacionadas a bilhete e informações gerais.\n")  
+
+    pergunta()  
+
+#feito
 def encerrar():
+    print("\nAtendimento Encerrado.")
     exit()
 
-
-def run():
-    pass
-
-
+#feito
 def pergunta():
-    pass
+    pergunta = input("\nPodemos te ajudar com mais alguma coisa?\n1 - Sim (Voltar ao Menu)\n2 - Não (Encerrar Atendimento)\nO que deseja?: ")
 
+    while pergunta.isnumeric() == False or (pergunta != "1" and pergunta != "2"):
+        pergunta = input("\nOpção inválida, por favor selecione dentre\n1 - Sim (Voltar ao Menu)\n2 - Não (Encerrar Atendimento)\nO que deseja?: ")
 
-def vrido():
-    pass
+    if pergunta == "1":
+        menu_principal()
+    elif pergunta == "2":
+        encerrar()        
 
 
 menu_principal()
