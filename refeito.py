@@ -172,8 +172,10 @@ def ajuda_caminho():
 
     G = Grafo(grafo)
 
-    distancias = G.menores_caminhos(input("Digite a Estação que você está: "), input("Digite a Estação para qual você quer ir: "))
-    print(distancias)
+    distancias = G.menores_caminhos(input("\nDigite a Estação que você está: "), input("\nDigite a Estação para qual você quer ir: "))
+    print("\nSiga nas seguintes estações: \n", distancias)
+
+    menu_principal()
 
 #feito
 def duvida_lotacao():
@@ -204,9 +206,7 @@ def duvidas_frequentes():
 
 
 def encerrar():
-    print ("encerrar")
     exit()
-    # pass
 
 
 def run():
