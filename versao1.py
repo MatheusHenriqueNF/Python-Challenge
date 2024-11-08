@@ -132,6 +132,7 @@ def run():
    
 def pergunta():
    # Função para executar a última pergunta ao cliente
+   
    # Criação da váriavel de pergunta
    pergunta = 0
 

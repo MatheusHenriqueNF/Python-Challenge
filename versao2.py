@@ -1,13 +1,17 @@
 from heapq import heapify, heappop, heappush
 import random
 
-#feito
 def menu_principal():
+    #  *Função do Menu principal*
+
+    # Entrada do usuário, sendo apresentado e logo após escolhendo entre uma das opções
     opcao = input("\nBem vindo! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
 
+    # Tratamento de erro na entrada do usuário
     while opcao.isnumeric() == False or (opcao != "1" and opcao != "2" and opcao != "3" and opcao != "4"):
         opcao = input("\nOpção inválida \nPor favor, selecione entre opção \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
 
+    # Chamada de função correspondente a escolha do usuário
     if opcao == "1":
         ajuda_caminho()
     elif opcao == "2":
@@ -17,10 +21,11 @@ def menu_principal():
     elif opcao == "4":
         encerrar()              
     
-#feito
-def ajuda_caminho():
-    from heapq import heapify, heappop, heappush
 
+def ajuda_caminho():
+    # *Função para informar a rota desejada ao cliente*
+        
+    # Criação do grafo das estações de metrô
     grafo = {
     # Linha 8-Diamante
     "Júlio Prestes": {"Palmeiras-Barra Funda": 1},
@@ -116,37 +121,48 @@ def ajuda_caminho():
     "Vila Sônia": {"São Paulo-Morumbi": 1}
     }        
 
+    # Criação da classe Grafo
     class Grafo:
+
+        # Método __init__ (construtor)
         def __init__(self, grafo = {}):
             self.grafo = grafo
 
+        # Método para adicionar as arestas do grafo
         def add_aresta(self, no1, no2, peso):
             if no1 not in self.grafo:
                 self.grafo[no1] = {}
             self.grafo[no1][no2] = peso
 
+        # Método responsável por definir as menores distâncias dentre os nós para o nó de origem
         def menores_distancias(self, raiz: str):
             distancias = {no: float("inf") for no in self.grafo}
             distancias[raiz] = 0
 
+            # Criação de lista de prioridade
             pq = [(0, raiz)]
             heapify(pq)
 
+            # Criação de variável para os nós já visitados
             visitado = set()
 
+            # Enquanto a lista de prioridade não estiver vazia será aberto o nó de prioridade mais alta, então seu nome e valor será extraido.
             while pq:
                 distancia_atual, no_atual = heappop(pq)
 
+                # Caso o nó já esteja na variável visitado, ele é ignorado
                 if no_atual in visitado:
                     continue
                 visitado.add(no_atual)
 
+                # Para cada vizinho é calculado a distância provisória do nó atual, adicionando o valor atual do vizinho ao peso da aresta da conexão
                 for vizinho, peso in self.grafo[no_atual].items():
                     tentativa_distancia = distancia_atual + peso
                     if tentativa_distancia < distancias[vizinho]:
                         distancias[vizinho] = tentativa_distancia
                         heappush (pq, (tentativa_distancia, vizinho))
 
+            # dicionário que contém o predecessor de cada nó envolvido no caminho 
             predecessores = {no: None for no in self.grafo}
 
             for no, distancia in distancias.items():
@@ -156,29 +172,33 @@ def ajuda_caminho():
 
             return distancias, predecessores
 
+        # Método que retorna o caminho mais curto a partir do dicionário predecessores
         def menores_caminhos(self, raiz: str, alvo: str):
             _, predecessores = self.menores_distancias(raiz)
 
             caminho = []
             no_atual = alvo
 
+            # Retornar ao nó de origem usando os predecessores
             while no_atual:
                 caminho.append(no_atual)
                 no_atual = predecessores[no_atual]
 
+            # Revertendo o caminho e retornando
             caminho.reverse()
 
             return caminho                                 
 
-
+    # "Chamando" o grafo
     G = Grafo(grafo)
 
+    # Captando do usuário, a estação de origem e a estação de destino
     distancias = G.menores_caminhos(input("\nDigite a Estação que você está: "), input("\nDigite a Estação para qual você quer ir: "))
     print("\nSiga nas seguintes estações: \n", distancias)
 
     pergunta()
 
-#feito
+
 def duvida_lotacao():
     # # Função para informar ao cliente a lotação de cada vagão e o tempo de chegada do próximo trem 
     
@@ -201,13 +221,18 @@ def duvida_lotacao():
 
     pergunta()
 
-#feito
+
 def duvidas_frequentes():
+    # *Função sobre dúvidas frequentes relacionadas ao sistema CPTM*
+
+    # Entrada do usuário sobre qual é a sua dúvida
     duvida = input("\nSelecione uma dentre as opções \n1- Horário de funcionamento \n2- Compra de bilhetes \n3- Frequência de Trens \n4- Opções de integração \n5- Atendimento ao Cliente \nQual seria sua dúvida?: ")
 
+    # Tratamento de erro 
     while duvida.isnumeric() == False or (duvida != "1" and duvida != "2" and duvida != "3" and duvida != "4" and duvida != "5"):
         duvida = input("\nOpção inválida \nPor favor, selecione uma das opções apresentadas\n1- Horário de funcionamento \n2- Compra de bilhetes \n3- Frequência de Trens \n4- Opções de integração \n5- Atendimento ao Cliente \nQual seria sua dúvida?:  ")
 
+    # Exibição das informações de acordo com a opção do cliente
     if duvida == "1":
      print ("\nHorário Geral: Das 4h até às 23:59 \nObservações: \n - Este horário pode ser prolongado em ocasiões especiais \n - Em feriados, este horário pode ser reduzido\n")
     elif duvida == "2":
@@ -221,18 +246,25 @@ def duvidas_frequentes():
 
     pergunta()  
 
-#feito
+
 def encerrar():
+    # Função para encerrar o programa 
+
     print("\nAtendimento Encerrado.")
     exit()
 
-#feito
+
 def pergunta():
+    # *Função para executar a última pergunta ao cliente*
+
+    # Entrada do usuário informando se deseja algo a mais ou não
     pergunta = input("\nPodemos te ajudar com mais alguma coisa?\n1 - Sim (Voltar ao Menu)\n2 - Não (Encerrar Atendimento)\nO que deseja?: ")
 
+    # Tratamento de erro
     while pergunta.isnumeric() == False or (pergunta != "1" and pergunta != "2"):
         pergunta = input("\nOpção inválida, por favor selecione dentre\n1 - Sim (Voltar ao Menu)\n2 - Não (Encerrar Atendimento)\nO que deseja?: ")
 
+    # Chamado da função correspondente a escolha do usuário
     if pergunta == "1":
         menu_principal()
     elif pergunta == "2":
