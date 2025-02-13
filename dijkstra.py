@@ -10,10 +10,10 @@ from dijkstar import Graph, find_path
 # graph.add_edge(4, 7, 1)
 # graph.add_edge(1, 7, 3)
 
-# # Chamando a função dijkstra
+ # Chamando a função dijkstra
 # shortest_path = find_path(graph, 1, 7)
 
-# # Exibindo os resultados
+ # Exibindo os resultados
 # print(graph)
 # print(shortest_path)
 
