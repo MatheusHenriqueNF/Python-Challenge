@@ -10,13 +10,14 @@ from dijkstar import Graph, find_path
 # graph.add_edge(4, 7, 1)
 # graph.add_edge(1, 7, 3)
 
- # Chamando a função dijkstra
+# Chamando a função dijkstra
 # shortest_path = find_path(graph, 1, 7)
 
  # Exibindo os resultados
 # print(graph)
 # print(shortest_path)
 
+graph = Graph()
 
 # Linha 8-Diamante
 graph.add_edge("Júlio Prestes", "Palmeiras-Barra Funda", 1)
@@ -198,3 +199,6 @@ graph.add_edge("São Paulo-Morumbi", "Butantã", 1)
 graph.add_edge("São Paulo-Morumbi", "Vila Sônia", 1)
 graph.add_edge("Vila Sônia", "São Paulo-Morumbi", 1)
 
+shortest_path = find_path(graph, "Amador Bueno", "Vila Prudente")
+
+print(shortest_path)
