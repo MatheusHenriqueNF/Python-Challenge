@@ -23,7 +23,7 @@ def menu_principal():
     
 
 def ajuda_caminho():
-    # *Função para informar a rota desejada ao cliente*
+    # Função para informar a rota desejada ao cliente*
             
     # Criação do grafo das estações de metrô
     G = nx.Graph()
