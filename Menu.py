@@ -4,12 +4,17 @@ import random
 def menu_principal():
     #  *Função do Menu principal*
 
-    # Entrada do usuário, sendo apresentado e logo após escolhendo entre uma das opções
-    opcao = input("\nBem vindo! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
+    while True: 
+        try:
+            opcao = input("\nBem vindo! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
+        
+            if opcao in ["1", "2", "3", "4"]:
+                break
+            else:
+                raise ValueError
 
-    # Tratamento de erro na entrada do usuário
-    while opcao.isnumeric() == False or (opcao != "1" and opcao != "2" and opcao != "3" and opcao != "4"):
-        opcao = input("\nOpção inválida \nPor favor, selecione entre opção \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
+        except ValueError:
+            erro = input("\nOpção inválida! \nPressione enter para continuar.")
 
     # Chamada de função correspondente a escolha do usuário
     if opcao == "1":
@@ -127,11 +132,37 @@ def ajuda_caminho():
         for destino, peso in conexoes.items():
          G.add_edge(estacao, destino, weight=peso)
 
-    origem = input("\nQual estação você está?\nR:")
-    destino = input("\nQual estação você quer ir?\nR:")
-    caminho_mais_curto = nx.shortest_path(G, source=origem, target=destino, weight="weight")
+    while True:
+        try:
+            origem = input("\nQual estação você está?\nR:")
+            origem_formatado = origem.strip()
+
+            if origem_formatado in grafo:
+                break
+            else:
+                raise ValueError
+
+        except ValueError:
+            erro = input("\nOpção inválida! \nPressione enter para continuar.")
+    
+    while True:
+        try: 
+            destino = input("\nQual estação você quer ir?\nR:")
+            destino_formatado = destino.strip()
+
+            if destino_formatado in grafo:
+                break
+            else:
+                raise ValueError
+
+        except ValueError:
+            erro = input("\nOpção inválida! \nPressione enter para continuar.")
+
+    caminho_mais_curto = nx.shortest_path(G, source=origem_formatado, target=destino_formatado, weight="weight")
 
     print("Caminho mais curto:", caminho_mais_curto)
+
+    input("\nPressione enter para continuar.")
 
     pergunta()
 
@@ -156,6 +187,8 @@ def duvida_lotacao():
     # Exibição das informações
     print(f"\nA lotação de cada vagão é:\nVagão 1 = {vag_1}%\nVagão 2 = {vag_2}%\nVagão 3 = {vag_3}%\nVagão 4 = {vag_4}%\nVagão 5 = {vag_5}%\nVagão 6 = {vag_6}%\nVagão 7 = {vag_7}%\nVagão 8 = {vag_8}% \n \nA chegada do próximo trem está prevista para {tempo_chegada_min} minutos e {tempo_chegada_seg} segundos\n")
 
+    input("Pressione enter para continuar.")
+
     pergunta()
 
 
@@ -163,11 +196,17 @@ def duvidas_frequentes():
     # *Função sobre dúvidas frequentes relacionadas ao sistema CPTM*
 
     # Entrada do usuário sobre qual é a sua dúvida
-    duvida = input("\nSelecione uma dentre as opções \n1- Horário de funcionamento \n2- Compra de bilhetes \n3- Frequência de Trens \n4- Opções de integração \n5- Atendimento ao Cliente \nQual seria sua dúvida?: ")
+    while True:
+        try:
+            duvida = input("\nSelecione uma dentre as opções \n1- Horário de funcionamento \n2- Compra de bilhetes \n3- Frequência de Trens \n4- Opções de integração \n5- Atendimento ao Cliente \nQual seria sua dúvida?: ")
 
-    # Tratamento de erro 
-    while duvida.isnumeric() == False or (duvida != "1" and duvida != "2" and duvida != "3" and duvida != "4" and duvida != "5"):
-        duvida = input("\nOpção inválida \nPor favor, selecione uma das opções apresentadas\n1- Horário de funcionamento \n2- Compra de bilhetes \n3- Frequência de Trens \n4- Opções de integração \n5- Atendimento ao Cliente \nQual seria sua dúvida?:  ")
+            if duvida in ["1", "2", "3", "4", "5"]:
+                break
+            else:
+                raise ValueError
+
+        except ValueError:
+            erro = input("\nOpção inválida! \nPressione enter para continuar.")
 
     # Exibição das informações de acordo com a opção do cliente
     if duvida == "1":
@@ -179,7 +218,9 @@ def duvidas_frequentes():
     elif duvida == "4":
      print ("\nBilhete Único: Integração com ônibus municipais da SPTrans e com o Metrô, permitindo combinações entre os meios de transporte pagando uma tarifa reduzida.\nMetrô: Integração direta com as linhas do Metrô nas estações Brás, Luz, Tatuapé, Barra Funda e Santo Amaro.\nÔnibus Intermunicipais (EMTU): Algumas estações da CPTM oferecem integração com linhas de ônibus intermunicipais gerenciadas pela EMTU, especialmente nas regiões metropolitanas.\nCiclovias e Bicicletários: Várias estações oferecem bicicletários gratuitos, além de ciclovias conectadas a algumas estações, facilitando a integração bicicleta-trem.\nTrens Metropolitanos: A Linha 13-Jade tem integração com o Aeroporto de Guarulhos, facilitando o transporte para a região aeroportuária.\n")
     elif duvida == "5":
-     print ("\nCentral de Atendimento: Disponível pelo telefone 0800-055-0121, funcionando 24 horas por dia para dúvidas, sugestões ou reclamações.\nFale Conosco: Formulário disponível no site oficial da CPTM para contato direto com o serviço de atendimento ao cliente.\nOuvidoria: Para casos que necessitam de uma resolução mais específica ou reclamações formais, a ouvidoria pode ser acessada pelo telefone ou pela internet.\nRedes Sociais: A CPTM também oferece atendimento ao cliente e informações em tempo real através de suas contas oficiais no Twitter e Facebook.\nPostos de Atendimento Presencial: Algumas estações possuem postos físicos de atendimento ao cliente para resolver questões relacionadas a bilhete e informações gerais.\n")  
+     print ("\nCentral de Atendimento: Disponível pelo telefone 0800-055-0121, funcionando 24 horas por dia para dúvidas, sugestões ou reclamações.\nFale Conosco: Formulário disponível no site oficial da CPTM para contato direto com o serviço de atendimento ao cliente.\nOuvidoria: Para casos que necessitam de uma resolução mais específica ou reclamações formais, a ouvidoria pode ser acessada pelo telefone ou pela internet.\nRedes Sociais: A CPTM também oferece atendimento ao cliente e informações em tempo real através de suas contas oficiais no Twitter e Facebook.\nPostos de Atendimento Presencial: Algumas estações possuem postos físicos de atendimento ao cliente para resolver questões relacionadas a bilhete e informações gerais.\n")
+
+    input("Pressione Enter para continuar.")  
 
     pergunta()  
 
@@ -195,11 +236,17 @@ def pergunta():
     # *Função para executar a última pergunta ao cliente*
 
     # Entrada do usuário informando se deseja algo a mais ou não
-    pergunta = input("\nPodemos te ajudar com mais alguma coisa?\n1 - Sim (Voltar ao Menu)\n2 - Não (Encerrar Atendimento)\nO que deseja?: ")
+    while True:
+        try:
+            pergunta = input("\nPodemos te ajudar com mais alguma coisa?\n1 - Sim (Voltar ao Menu)\n2 - Não (Encerrar Atendimento)\nO que deseja?: ")
 
-    # Tratamento de erro
-    while pergunta.isnumeric() == False or (pergunta != "1" and pergunta != "2"):
-        pergunta = input("\nOpção inválida, por favor selecione dentre\n1 - Sim (Voltar ao Menu)\n2 - Não (Encerrar Atendimento)\nO que deseja?: ")
+            if pergunta in ["1", "2"]:
+                break
+            else:
+                raise ValueError
+
+        except ValueError:
+            erro = input("\nOpção inválida! \nPressione enter para continuar.")
 
     # Chamado da função correspondente a escolha do usuário
     if pergunta == "1":
@@ -208,4 +255,5 @@ def pergunta():
         encerrar()        
 
 
-menu_principal()
+if __name__ == "__main__":
+    menu_principal()
