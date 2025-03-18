@@ -1,4 +1,5 @@
 import networkx as nx
+import json as js
 import random
 
 def menu_principal():
@@ -6,7 +7,6 @@ def menu_principal():
     # ValueError, 
 
     # Entrada do usuário, sendo apresentado e logo após escolhendo entre uma das opções
-    opcao = int(input("\nBem vindo! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: "))
 
     # Tratamento de erro na entrada do usuário
     # while opcao.isnumeric() == False or (opcao != "1" and opcao != "2" and opcao != "3" and opcao != "4"):
@@ -169,6 +169,13 @@ def ajuda_caminho():
 
     print("Caminho mais curto:", caminho_mais_curto)
 
+    mensagem_caminho = "O caminho mais curto é o seguinte:"
+
+    caminho_mensagem = [mensagem_caminho,caminho_mais_curto]
+
+    with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+        js.dump(caminho_mensagem, arquivo, indent=4, ensure_ascii=False)
+
     input("\nPressione enter para continuar.")
 
     pergunta()
@@ -225,18 +232,11 @@ def duvidas_frequentes():
     elif duvida == "4":
      print ("\nBilhete Único: Integração com ônibus municipais da SPTrans e com o Metrô, permitindo combinações entre os meios de transporte pagando uma tarifa reduzida.\nMetrô: Integração direta com as linhas do Metrô nas estações Brás, Luz, Tatuapé, Barra Funda e Santo Amaro.\nÔnibus Intermunicipais (EMTU): Algumas estações da CPTM oferecem integração com linhas de ônibus intermunicipais gerenciadas pela EMTU, especialmente nas regiões metropolitanas.\nCiclovias e Bicicletários: Várias estações oferecem bicicletários gratuitos, além de ciclovias conectadas a algumas estações, facilitando a integração bicicleta-trem.\nTrens Metropolitanos: A Linha 13-Jade tem integração com o Aeroporto de Guarulhos, facilitando o transporte para a região aeroportuária.\n")
     elif duvida == "5":
-     print ("\nCentral de Atendimento: Disponível pelo telefone 0800-055-0121, funcionando 24 horas por dia para dúvidas, sugestões ou reclamações.\nFale Conosco: Formulário disponível no site oficial da CPTM para contato direto com o serviço de atendimento ao cliente.\nOuvidoria: Para casos que necessitam de uma resolução mais específica ou reclamações formais, a ouvidoria pode ser acessada pelo telefone ou pela internet.\nRedes Sociais: A CPTM também oferece atendimento ao cliente e informações em tempo real através de suas contas oficiais no Twitter e Facebook.\nPostos de Atendimento Presencial: Algumas estações possuem postos físicos de atendimento ao cliente para resolver questões relacionadas a bilhete e informações gerais.\n")
+     print ("\nCentral de Atendimento: Disponível pelo telefone 0800-055-0121, funcionando 24 horas por dia para dúvidas, sugestões ou reclamações.\n\nFale Conosco: Formulário disponível no site oficial da CPTM para contato direto com o serviço de atendimento ao cliente.\n\nOuvidoria: Para casos que necessitam de uma resolução mais específica ou reclamações formais, a ouvidoria pode ser acessada pelo telefone ou pela internet.\n\nRedes Sociais: A CPTM também oferece atendimento ao cliente e informações em tempo real através de suas contas oficiais no Twitter e Facebook.\n\nPostos de Atendimento Presencial: Algumas estações possuem postos físicos de atendimento ao cliente para resolver questões relacionadas a bilhete e informações gerais.\n")
 
     input("Pressione Enter para continuar.")  
 
     pergunta()  
-
-
-def encerrar():
-    # Função para encerrar o programa 
-
-    print("\nAtendimento Encerrado.")
-    exit()
 
 
 def pergunta():
@@ -259,15 +259,17 @@ def pergunta():
     if pergunta == "1":
         menu_principal()
     elif pergunta == "2":
-        encerrar()        
+        encerrar()
 
+
+def encerrar():
+    # Função para encerrar o programa 
+
+    print("\nAtendimento Encerrado.")
+    exit()
 
 if __name__ == "__main__":
     menu_principal()
 
-# Utilizar funções com passagem de parâmetro e retorno (X)
 
-# Validação dos dados de entrada de usuário utilizando tratamento de exceções (try-except). ( )
-
-# Armazenamento de dados em arquivos JSON. O programa deve ser capaz de criar novos arquivos e atualizar informações de arquivos existentes. ( )
-    menu_principal()
+# Coletar nome do usuário e utilizar nos prints do programa
