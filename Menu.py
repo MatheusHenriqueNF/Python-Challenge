@@ -2,43 +2,8 @@ import networkx as nx
 import json as js
 import random
 
-def menu_principal():
-    #  *Função do Menu principal*
-    # ValueError, 
-
-    # Entrada do usuário, sendo apresentado e logo após escolhendo entre uma das opções
-
-    # Tratamento de erro na entrada do usuário
-    # while opcao.isnumeric() == False or (opcao != "1" and opcao != "2" and opcao != "3" and opcao != "4"):
-    #     opcao = input("\nOpção inválida \nPor favor, selecione entre opção \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
-    while True: 
-        try:
-            opcao = input("\nBem vindo! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
-        
-            if opcao in ["1", "2", "3", "4"]:
-                break
-            else:
-                raise ValueError
-
-        except ValueError:
-            erro = input("\nOpção inválida! \nPressione enter para continuar.")
-
-    # Chamada de função correspondente a escolha do usuário
-    if opcao == "1":
-        ajuda_caminho()
-    elif opcao == "2":
-        duvida_lotacao()
-    elif opcao == "3":
-        duvidas_frequentes() 
-    elif opcao == "4":
-        encerrar()              
-    
-
-def ajuda_caminho():
-    # Função para informar a rota desejada ao cliente*
-            
-    # Criação do grafo das estações de metrô
-    G = nx.Graph()
+def inicio():
+    caminho_dict = {}
 
     grafo = {
         # Linha 8-Diamante
@@ -135,9 +100,18 @@ def ajuda_caminho():
         "Vila Sônia": {"São Paulo-Morumbi": 1}
         }
 
-    for estacao, conexoes in grafo.items():
-        for destino, peso in conexoes.items():
-         G.add_edge(estacao, destino, weight=peso)
+
+    while True: 
+        try:
+            nome = input("\nQual o seu nome?\nR:")
+        
+            if nome.isalpha() == True:
+                break
+            else:
+                raise ValueError
+
+        except ValueError:
+            erro = input("\nOpção inválida! \nPressione enter para continuar.")
 
     while True:
         try:
@@ -151,6 +125,43 @@ def ajuda_caminho():
 
         except ValueError:
             erro = input("\nOpção inválida! \nPressione enter para continuar.")
+
+    return nome, origem_formatado, grafo, menu_principal(nome, origem_formatado, grafo, caminho_dict)
+
+
+def menu_principal(nome, origem_formatado, grafo, caminho_dict):
+    while True: 
+        try:
+            opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho\nOpção 5: Encerrar atendimento \n \nQual opção gostaria?: ")
+        
+            if opcao in ["1", "2", "3", "4", "5"]:
+                break
+            else:
+                raise ValueError
+
+        except ValueError:
+            erro = input("\nOpção inválida! \nPressione enter para continuar.")
+    if opcao == "1":
+            ajuda_caminho(nome, origem_formatado, grafo)
+    elif opcao == "2":
+            duvida_lotacao(nome, origem_formatado, grafo, caminho_dict)
+    elif opcao == "3":
+            duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict) 
+    elif opcao == "4":
+            editar_caminho(nome, origem_formatado, grafo, caminho_dict)
+    elif opcao == "5":
+            encerrar(nome)
+    
+
+def ajuda_caminho(nome, origem_formatado, grafo):
+    # Função para informar a rota desejada ao cliente*
+            
+    # Criação do grafo das estações de metrô
+    G = nx.Graph()
+
+    for estacao, conexoes in grafo.items():
+        for destino, peso in conexoes.items():
+         G.add_edge(estacao, destino, weight=peso)
     
     while True:
         try: 
@@ -167,21 +178,37 @@ def ajuda_caminho():
 
     caminho_mais_curto = nx.shortest_path(G, source=origem_formatado, target=destino_formatado, weight="weight")
 
-    print("Caminho mais curto:", caminho_mais_curto)
+    caminho_dict = {i: estacao for i, estacao in enumerate(caminho_mais_curto, start=1)}
 
-    mensagem_caminho = "O caminho mais curto é o seguinte:"
-
-    caminho_mensagem = [mensagem_caminho,caminho_mais_curto]
-
-    with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
-        js.dump(caminho_mensagem, arquivo, indent=4, ensure_ascii=False)
+    print(f"\nAqui está seu caminho, {nome}!")
+    for chave, valor in caminho_dict.items():
+     print(f"Parada {chave}: {valor}")
 
     input("\nPressione enter para continuar.")
 
-    pergunta()
+    while True:
+        try:
+            pergunta_impressao = input("\nVocê deseja imprimir este caminho?\n1 - Sim\n2 - Não\nR:")
+
+            if pergunta_impressao in ["1", "2"]:
+                break
+            else:
+                raise ValueError
+            
+        except ValueError:
+            erro = input("\nOpção inválida!\nPressione enter para continuar.")
+
+    if pergunta_impressao == "1":
+        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+            js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
+        print(f"\nSeu caminho foi impresso, {nome}!")
+
+    input("\nPressione enter para continuar.")
+
+    return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict)
 
 
-def duvida_lotacao():
+def duvida_lotacao(nome, origem_formatado, grafo, caminho_dict):
     # # Função para informar ao cliente a lotação de cada vagão e o tempo de chegada do próximo trem 
     
     # Criação das variáveis de lotação de cada vagão 
@@ -203,10 +230,10 @@ def duvida_lotacao():
 
     input("Pressione enter para continuar.")
 
-    pergunta()
+    pergunta(nome, origem_formatado, grafo, caminho_dict)
 
 
-def duvidas_frequentes():
+def duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict):
     # *Função sobre dúvidas frequentes relacionadas ao sistema CPTM*
 
     # Entrada do usuário sobre qual é a sua dúvida
@@ -236,10 +263,101 @@ def duvidas_frequentes():
 
     input("Pressione Enter para continuar.")  
 
-    pergunta()  
+    pergunta(nome, origem_formatado, grafo, caminho_dict) 
 
 
-def pergunta():
+def editar_caminho(nome, origem_formatado, grafo, caminho_dict):
+    while True:
+        try:
+            # Pergunta qual operação o usuário deseja realizar
+            pergunta_edicao = input("\nQual operação você deseja?\n1 - Adicionar\n2 - Editar\n3 - Remover\nR:")
+            
+            if pergunta_edicao in ["1", "2", "3"]:
+                break
+            else:
+                raise ValueError
+        
+        except ValueError:
+            erro = input("\nOpção inválida! \nPressione enter para continuar.")
+
+    if pergunta_edicao == "1":
+        # Adicionar uma estação ao caminho
+        while True:
+            try:
+                nova_estacao = input("\nQual estação você deseja adicionar ao caminho?\nR:")
+            
+                if nova_estacao in caminho_dict.values():
+                    break
+                else:
+                    raise ValueError
+                
+            except ValueError:
+                erro = input("\nOpção inválida! \nPressione enter para continuar.")
+
+
+        caminho_dict[len(caminho_dict) + 1] = nova_estacao
+        print(f"\nA estação {nova_estacao} foi adicionada com sucesso ao caminho!")
+        input("Pressione enter para continuar.")
+        print("\nAqui está seu caminho")
+        for chave, valor in caminho_dict.items():
+            print(f"Parada {chave}: {valor}")
+
+        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+            js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
+
+    elif pergunta_edicao == "2":
+        # Editar uma estação existente
+        while True:
+            try:
+                indice = int(input("\nDigite o número da parada que você deseja editar: "))
+                if indice in caminho_dict:
+                    break
+                else:
+                    raise ValueError
+                    
+            except ValueError:
+                erro = input("\nOpção inválida! \nPressione enter para continuar.")
+
+        nova_estacao = input(f"\nQual o novo nome para a parada {indice}? R: ")
+        caminho_dict[indice] = nova_estacao
+        print(f"\nA parada {indice} foi editada para {nova_estacao}.")
+        input("Pressione enter para continuar.")
+        print("\nAqui está seu caminho")
+        for chave, valor in caminho_dict.items():
+            print(f"Parada {chave}: {valor}")
+
+        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+            js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
+
+    elif pergunta_edicao == "3":
+        # Remover uma estação do caminho
+        while True:
+            try:
+                indice_remover = int(input("\nDigite o número da parada que você deseja remover: "))
+                if indice_remover in caminho_dict:
+                    break
+                else:
+                    raise ValueError
+            except ValueError:
+                erro = input("\nOpção inválida! \nPressione enter para continuar.")
+                    
+        removido = caminho_dict.pop(indice_remover)
+        print(f"\nA parada {indice_remover} ({removido}) foi removida com sucesso!")
+
+        # Reorganizar os índices após remoção
+        caminho_dict = {i: estacao for i, (indice, estacao) in enumerate(sorted(caminho_dict.items()), start=1)}                  
+        input("Pressione enter para continuar.")
+        print("\nAqui está seu caminho")
+        for chave, valor in caminho_dict.items():
+            print(f"Parada {chave}: {valor}")
+
+        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+            js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
+        
+    return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict)
+
+
+def pergunta(nome, origem_formatado, grafo, caminho_dict):
     # *Função para executar a última pergunta ao cliente*
 
     # Entrada do usuário informando se deseja algo a mais ou não
@@ -257,19 +375,20 @@ def pergunta():
 
     # Chamado da função correspondente a escolha do usuário
     if pergunta == "1":
-        menu_principal()
+        menu_principal(nome, origem_formatado, grafo, caminho_dict)
     elif pergunta == "2":
-        encerrar()
+        encerrar(nome)
 
 
-def encerrar():
+def encerrar(nome):
     # Função para encerrar o programa 
 
-    print("\nAtendimento Encerrado.")
+    print(f"\nAtendimento Encerrado\nTenha um bom dia, {nome}!")
     exit()
 
+
 if __name__ == "__main__":
-    menu_principal()
+    inicio()
 
 
 # Coletar nome do usuário e utilizar nos prints do programa

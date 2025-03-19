@@ -1,32 +1,15 @@
-[
-    "Aqui está o caminho mais curto para o seu destino, Cley:",
-    [
-        "Osasco",
-        "Presidente Altino",
-        "Ceasa",
-        "Villa-Lobos - Jaguaré",
-        "Cidade Universitária",
-        "Pinheiros",
-        "Faria Lima",
-        "Fradinho Coutinho",
-        "Oscar Freire",
-        "Paulista",
-        "Higienópolis-Mackenzie",
-        "República",
-        "Luz",
-        "São Bento",
-        "Sé",
-        "Liberdade",
-        "São Joaquim",
-        "Vergueiro",
-        "Paraíso",
-        "Ana Rosa",
-        "Vila Mariana",
-        "Santa Cruz",
-        "Praça da Árvore",
-        "Saúde",
-        "São Judas",
-        "Conceição",
-        "Jabaquara"
-    ]
-]
+{
+    "1": "Sé",
+    "2": "Liberdade",
+    "3": "São Joaquim",
+    "4": "Vergueiro",
+    "5": "Paraíso",
+    "6": "Ana Rosa",
+    "7": "Vila Mariana",
+    "8": "Santa Cruz",
+    "9": "Praça da Árvore",
+    "10": "Saúde",
+    "11": "São Judas",
+    "12": "Conceição",
+    "13": "Inferno"
+}

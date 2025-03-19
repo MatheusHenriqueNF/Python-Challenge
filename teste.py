@@ -2,14 +2,6 @@ import networkx as nx
 import json as js
 
 def menu_principal(nome, origem_formatado, grafo):
-    #  *Função do Menu principal*
-    # ValueError, 
-
-    # Entrada do usuário, sendo apresentado e logo após escolhendo entre uma das opções
-
-    # Tratamento de erro na entrada do usuário
-    # while opcao.isnumeric() == False or (opcao != "1" and opcao != "2" and opcao != "3" and opcao != "4"):
-    #     opcao = input("\nOpção inválida \nPor favor, selecione entre opção \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
     while True: 
         try:
             opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento \n \nQual opção gostaria?: ")
@@ -58,21 +50,34 @@ def ajuda_caminho(nome, origem_formatado, grafo):
 
     caminho_mais_curto = nx.shortest_path(G, source=origem_formatado, target=destino_formatado, weight="weight")
 
-    mensagem_caminho = f"Aqui está o caminho mais curto para o seu destino, {nome}:"
+    caminho_dict = {i: estacao for i, estacao in enumerate(caminho_mais_curto, start=1)}
 
-    caminho_mensagem = [mensagem_caminho,caminho_mais_curto]
-
-    for i in caminho_mensagem:
-        print(f"\n{i}")
-
-    # print(caminho_mensagem)
-
-    with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
-        js.dump(caminho_mensagem, arquivo, indent=4, ensure_ascii=False)
+    print(f"\nAqui está seu caminho, {nome}!")
+    for chave, valor in caminho_dict.items():
+     print(f"Parada {chave}: {valor}")
 
     input("\nPressione enter para continuar.")
 
-    # pergunta()
+    while True:
+        try:
+            pergunta_impressao = input("\nVocê deseja imprimir este caminho?\n1 - Sim\n2 - Não\nR:")
+
+            if pergunta_impressao in ["1", "2"]:
+                break
+            else:
+                raise ValueError
+            
+        except ValueError:
+            erro = input("\nOpção inválida!\nPressione enter para continuar.")
+
+    if pergunta_impressao == "1":
+        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+            js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
+        print(f"\nSeu caminho foi impresso, {nome}!")
+
+    input("\nPressione enter para continuar.")
+
+    pergunta(nome, origem_formatado, grafo)
 
 
 def inicio():
