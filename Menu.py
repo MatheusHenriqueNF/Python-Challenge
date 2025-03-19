@@ -389,6 +389,3 @@ def encerrar(nome):
 
 if __name__ == "__main__":
     inicio()
-
-
-# Coletar nome do usuário e utilizar nos prints do programa
