@@ -3,6 +3,8 @@ import json as js
 import random
 
 def inicio():
+    variaveldasilva = 0
+
     caminho_dict = {}
 
     grafo = {
@@ -126,34 +128,56 @@ def inicio():
         except ValueError:
             erro = input("\nOpção inválida! \nPressione enter para continuar.")
 
-    return nome, origem_formatado, grafo, menu_principal(nome, origem_formatado, grafo, caminho_dict)
+    return nome, origem_formatado, grafo, variaveldasilva, menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
-def menu_principal(nome, origem_formatado, grafo, caminho_dict):
-    while True: 
-        try:
-            opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho\nOpção 5: Encerrar atendimento \n \nQual opção gostaria?: ")
-        
-            if opcao in ["1", "2", "3", "4", "5"]:
-                break
-            else:
-                raise ValueError
+def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
+    if variaveldasilva == 0:
+        while True: 
+            try:
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento\n \nQual opção gostaria?: ")
+            
+                if opcao in ["1", "2", "3", "4", "5"]:
+                    break
+                else:
+                    raise ValueError
 
-        except ValueError:
-            erro = input("\nOpção inválida! \nPressione enter para continuar.")
-    if opcao == "1":
-            ajuda_caminho(nome, origem_formatado, grafo)
-    elif opcao == "2":
-            duvida_lotacao(nome, origem_formatado, grafo, caminho_dict)
-    elif opcao == "3":
-            duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict) 
-    elif opcao == "4":
-            editar_caminho(nome, origem_formatado, grafo, caminho_dict)
-    elif opcao == "5":
-            encerrar(nome)
+            except ValueError:
+                erro = input("\nOpção inválida! \nPressione enter para continuar.")
+        if opcao == "1":
+                ajuda_caminho(nome, origem_formatado, grafo, variaveldasilva)
+        elif opcao == "2":
+                duvida_lotacao(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+        elif opcao == "3":
+                duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+        elif opcao == "4":
+                encerrar(nome)
+
+    else:
+        while True: 
+            try:
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho\nOpção 5: Encerrar atendimento \n \nQual opção gostaria?: ")
+            
+                if opcao in ["1", "2", "3", "4", "5"]:
+                    break
+                else:
+                    raise ValueError
+
+            except ValueError:
+                erro = input("\nOpção inválida! \nPressione enter para continuar.")
+        if opcao == "1":
+                ajuda_caminho(nome, origem_formatado, grafo, variaveldasilva)
+        elif opcao == "2":
+                duvida_lotacao(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+        elif opcao == "3":
+                duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+        elif opcao == "4":
+                editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+        elif opcao == "5":
+                encerrar(nome)
     
 
-def ajuda_caminho(nome, origem_formatado, grafo):
+def ajuda_caminho(nome, origem_formatado, grafo, variaveldasilva):
     # Função para informar a rota desejada ao cliente*
             
     # Criação do grafo das estações de metrô
@@ -202,13 +226,14 @@ def ajuda_caminho(nome, origem_formatado, grafo):
         with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
             js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
         print(f"\nSeu caminho foi impresso, {nome}!")
+        variaveldasilva = variaveldasilva + 1
 
     input("\nPressione enter para continuar.")
 
-    return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict)
+    return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
-def duvida_lotacao(nome, origem_formatado, grafo, caminho_dict):
+def duvida_lotacao(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
     # # Função para informar ao cliente a lotação de cada vagão e o tempo de chegada do próximo trem 
     
     # Criação das variáveis de lotação de cada vagão 
@@ -230,10 +255,10 @@ def duvida_lotacao(nome, origem_formatado, grafo, caminho_dict):
 
     input("Pressione enter para continuar.")
 
-    pergunta(nome, origem_formatado, grafo, caminho_dict)
+    pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
-def duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict):
+def duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
     # *Função sobre dúvidas frequentes relacionadas ao sistema CPTM*
 
     # Entrada do usuário sobre qual é a sua dúvida
@@ -263,10 +288,10 @@ def duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict):
 
     input("Pressione Enter para continuar.")  
 
-    pergunta(nome, origem_formatado, grafo, caminho_dict) 
+    pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
 
 
-def editar_caminho(nome, origem_formatado, grafo, caminho_dict):
+def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
     while True:
         try:
             # Pergunta qual operação o usuário deseja realizar
@@ -354,10 +379,10 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict):
         with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
             js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
         
-    return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict)
+    return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
-def pergunta(nome, origem_formatado, grafo, caminho_dict):
+def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
     # *Função para executar a última pergunta ao cliente*
 
     # Entrada do usuário informando se deseja algo a mais ou não
@@ -375,7 +400,7 @@ def pergunta(nome, origem_formatado, grafo, caminho_dict):
 
     # Chamado da função correspondente a escolha do usuário
     if pergunta == "1":
-        menu_principal(nome, origem_formatado, grafo, caminho_dict)
+        menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
     elif pergunta == "2":
         encerrar(nome)
 
