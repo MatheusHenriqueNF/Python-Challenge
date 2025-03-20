@@ -105,7 +105,7 @@ def inicio():
 
     while True: 
         try:
-            nome = input("\nQual o seu nome?\nR:")
+            nome = input("\nQual o seu primeiro nome?\nR:")
         
             if nome.isalpha() == True:
                 break
@@ -223,7 +223,7 @@ def ajuda_caminho(nome, origem_formatado, grafo, variaveldasilva):
             erro = input("\nOpção inválida!\nPressione enter para continuar.")
 
     if pergunta_impressao == "1":
-        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+        with open("caminho.json", mode="w", encoding="utf-8") as arquivo:
             js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
         print(f"\nSeu caminho foi impresso, {nome}!")
         variaveldasilva = variaveldasilva + 1
@@ -307,17 +307,17 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
     if pergunta_edicao == "1":
         # Adicionar uma estação ao caminho
-        while True:
-            try:
-                nova_estacao = input("\nQual estação você deseja adicionar ao caminho?\nR:")
+        # while True:
+        #     try:
+        nova_estacao = input("\nQual estação você deseja adicionar ao caminho?\nR:")
             
-                if nova_estacao in caminho_dict.values():
-                    break
-                else:
-                    raise ValueError
+            #     if nova_estacao in caminho_dict.values():
+            #         break
+            #     else:
+            #         raise ValueError
                 
-            except ValueError:
-                erro = input("\nOpção inválida! \nPressione enter para continuar.")
+            # except ValueError:
+            #     erro = input("\nOpção inválida! \nPressione enter para continuar.")
 
 
         caminho_dict[len(caminho_dict) + 1] = nova_estacao
@@ -327,7 +327,7 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         for chave, valor in caminho_dict.items():
             print(f"Parada {chave}: {valor}")
 
-        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+        with open("caminho.json", mode="w", encoding="utf-8") as arquivo:
             js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
 
     elif pergunta_edicao == "2":
@@ -351,7 +351,7 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         for chave, valor in caminho_dict.items():
             print(f"Parada {chave}: {valor}")
 
-        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+        with open("caminho.json", mode="w", encoding="utf-8") as arquivo:
             js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
 
     elif pergunta_edicao == "3":
@@ -376,7 +376,7 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         for chave, valor in caminho_dict.items():
             print(f"Parada {chave}: {valor}")
 
-        with open("caminho.txt", mode="w", encoding="utf-8") as arquivo:
+        with open("caminho.json", mode="w", encoding="utf-8") as arquivo:
             js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
         
     return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
