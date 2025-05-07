@@ -5,6 +5,14 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app) 
 
+# Uma função para trazer as linhas e estações do banco de dados
+# Função para trazer as perguntas e respostas do banco de dados
+# Função para tabela de log(deixar por ultimo)
+# isso é para o site
+
+# função para trazer os idiomas do banco de dados (para trazer no totem tem que ser idioma status 1)
+# Adaptar o Dijktra para calcular o caminho entre as estações do banco de dados
+# isso é para o totem
 
 def get_conexao():
     return oracledb.connect(
