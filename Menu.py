@@ -140,7 +140,7 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
     if variaveldasilva == 0:
         while True: 
             try:
-                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento\n \nQual opção gostaria?: ")
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Realizar login (APENAS PARA FUNCIONÁRIOS) \nOpção 5: Encerrar atendimento\n \nQual opção gostaria?: ")
             
                 if opcao in ["1", "2", "3", "4", "5"]:
                     break
@@ -154,16 +154,18 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "2":
                 duvida_lotacao(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "3":
-                duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+                duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "4":
+                login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+        elif opcao == "5":
                 encerrar(nome)
 
     else:
         while True: 
             try:
-                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho\nOpção 5: Encerrar atendimento \n \nQual opção gostaria?: ")
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho \nOpção 5: Realizar login (APENAS PARA FUNCIONÁRIOS)\nOpção 6: Encerrar atendimento \n \nQual opção gostaria?: ")
             
-                if opcao in ["1", "2", "3", "4", "5"]:
+                if opcao in ["1", "2", "3", "4", "5", "6"]:
                     break
                 else:
                     raise ValueError
@@ -179,6 +181,8 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "4":
                 editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "5":
+                login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+        elif opcao == "6":
                 encerrar(nome)
     
 
@@ -195,7 +199,7 @@ def ajuda_caminho(nome, origem_formatado, grafo, variaveldasilva):
     while True:
         try: 
             destino = input("\nQual estação você quer ir?\nR:")
-            destino_formatado = destino.strip()
+            destino_formatado = destino.strip().title()
 
             if destino_formatado in grafo:
                 break
@@ -355,17 +359,17 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
     if pergunta_edicao == "1":
         # Adicionar uma estação ao caminho
-        # while True:
-        #     try:
-        nova_estacao = input("\nQual estação você deseja adicionar ao caminho?\nR:")
+        while True:
+            try:
+                nova_estacao = input("\nQual estação você deseja adicionar ao caminho?\nR:")
             
-            #     if nova_estacao in caminho_dict.values():
-            #         break
-            #     else:
-            #         raise ValueError
+                if nova_estacao in grafo:
+                    break
+                else:
+                    raise ValueError
                 
-            # except ValueError:
-            #     erro = input("\nOpção inválida! \nPressione enter para continuar.")
+            except ValueError:
+                erro = input("\nOpção inválida! \nPressione enter para continuar.")
 
 
         caminho_dict[len(caminho_dict) + 1] = nova_estacao
@@ -428,6 +432,92 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
             js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
         
     return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+
+def login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute("select login from c_usuario order by id_usuario")
+            captura_login = cur.fetchall() #lista
+            cur.execute("select senha from c_usuario order by id_usuario")
+            captura_senha = cur.fetchall()
+    lista_login = [item[0] for item in captura_login]
+    lista_senha = [item[0] for item in captura_senha]
+
+    print(lista_login)
+    print(lista_senha)
+
+    tentativa_login = input("Login: ").strip()
+    tentativa_senha = input("Senha: ").strip()
+
+    if tentativa_login not in lista_login or tentativa_senha not in lista_senha:
+        print("\nLogin ou senha incorretos")
+        print("\nRetornando ao menu principal...")
+        input("\nPressione enter para continuar")
+        menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+    elif tentativa_login == "N/A":
+        print("\nLogin de convidado não aceito")
+        print("\nRetornando ao menu principal...")
+        input("\nPressione enter para continuar")
+        menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+    else:
+        while True:
+            try: 
+                opcao = input("\nBem vindo ao menu do administrador\nSelecione a opção desejada:\nOpção 1 - Alterar resposta de Dúvidas Frequentes\nOpção 2 - Excluir registro de histórico de busca de estações\nR: ")
+                if opcao in ["1", "2"]:
+                    break
+                else:
+                    raise ValueError
+
+            except ValueError:
+                input("\nOpção inválida! \nPressione enter para continuar.")
+        
+        if opcao == "1":
+            alterar_respostas(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+        elif opcao == "2":
+            excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+
+def alterar_respostas(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute("SELECT pergunta FROM C_Duvidas_Frequentes")
+            captura_perguntas = cur.fetchall()
+    lista_perguntas = [item[0] for item in captura_perguntas]
+
+    print("\nA resposta de qual pergunta você deseja alterar?")
+    for i in lista_perguntas:
+        print(f"{lista_perguntas.index(i) + 1} - {i}")
+
+    while True:
+        try:
+            opcao_pergunta = int(input("R: "))
+
+            if opcao_pergunta <= len(lista_perguntas):
+                break
+            else:
+                raise ValueError
+        
+        except ValueError:
+            input("Opção inválida, pressione enter para continuar.")
+    
+    resposta_nova = input("\nEscreva a nova resposta da pergunta\nR: ")
+
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute(f"UPDATE C_Duvidas_Frequentes SET resposta = '{resposta_nova}' WHERE id_duvida = {opcao_pergunta}")
+            con.commit()
+    print("\nA resposta foi alterada com sucesso!")
+    print("\nVoltando ao menu principal...")
+    input("Pressione enter para continuar.")
+    menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+
+def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
+    input("dale dele dele dolly")
+    menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
