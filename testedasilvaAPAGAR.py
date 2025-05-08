@@ -140,7 +140,7 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
     if variaveldasilva == 0:
         while True: 
             try:
-                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Encerrar atendimento\n \nQual opção gostaria?: ")
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Realizar login (APENAS PARA FUNCIONÁRIOS) \nOpção 5: Encerrar atendimento\n \nQual opção gostaria?: ")
             
                 if opcao in ["1", "2", "3", "4", "5"]:
                     break
@@ -154,16 +154,18 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "2":
                 duvida_lotacao(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "3":
-                duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+                duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "4":
+                login() 
+        elif opcao == "5":
                 encerrar(nome)
 
     else:
         while True: 
             try:
-                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho\nOpção 5: Encerrar atendimento \n \nQual opção gostaria?: ")
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho \nOpção 5: Realizar login (APENAS PARA FUNCIONÁRIOS)\nOpção 6: Encerrar atendimento \n \nQual opção gostaria?: ")
             
-                if opcao in ["1", "2", "3", "4", "5"]:
+                if opcao in ["1", "2", "3", "4", "5", "6"]:
                     break
                 else:
                     raise ValueError
@@ -179,6 +181,8 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "4":
                 editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "5":
+                login()
+        elif opcao == "6":
                 encerrar(nome)
     
 
@@ -195,7 +199,7 @@ def ajuda_caminho(nome, origem_formatado, grafo, variaveldasilva):
     while True:
         try: 
             destino = input("\nQual estação você quer ir?\nR:")
-            destino_formatado = destino.strip()
+            destino_formatado = destino.strip().title()
 
             if destino_formatado in grafo:
                 break
@@ -355,17 +359,17 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
     if pergunta_edicao == "1":
         # Adicionar uma estação ao caminho
-        # while True:
-        #     try:
-        nova_estacao = input("\nQual estação você deseja adicionar ao caminho?\nR:")
+        while True:
+            try:
+                nova_estacao = input("\nQual estação você deseja adicionar ao caminho?\nR:")
             
-            #     if nova_estacao in caminho_dict.values():
-            #         break
-            #     else:
-            #         raise ValueError
+                if nova_estacao in grafo:
+                    break
+                else:
+                    raise ValueError
                 
-            # except ValueError:
-            #     erro = input("\nOpção inválida! \nPressione enter para continuar.")
+            except ValueError:
+                erro = input("\nOpção inválida! \nPressione enter para continuar.")
 
 
         caminho_dict[len(caminho_dict) + 1] = nova_estacao
@@ -428,6 +432,10 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
             js.dump(caminho_dict, arquivo, indent=4, ensure_ascii=False)
         
     return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+
+def login():
+    print("pipipi popopo")
 
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
