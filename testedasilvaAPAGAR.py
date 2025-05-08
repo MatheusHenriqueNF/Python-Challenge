@@ -156,7 +156,7 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "3":
                 duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "4":
-                login() 
+                login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
         elif opcao == "5":
                 encerrar(nome)
 
@@ -181,7 +181,7 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "4":
                 editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "5":
-                login()
+                login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "6":
                 encerrar(nome)
     
@@ -434,8 +434,58 @@ def editar_caminho(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
     return caminho_dict, pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
-def login():
-    print("pipipi popopo")
+def login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute("select login from c_usuario order by id_usuario")
+            captura_login = cur.fetchall() #lista
+            cur.execute("select senha from c_usuario order by id_usuario")
+            captura_senha = cur.fetchall()
+    lista_login = [item[0] for item in captura_login]
+    lista_senha = [item[0] for item in captura_senha]
+
+    print(lista_login)
+    print(lista_senha)
+
+    tentativa_login = input("Login: ").strip()
+    tentativa_senha = input("Senha: ").strip()
+
+    if tentativa_login not in lista_login or tentativa_senha not in lista_senha:
+        print("\nLogin ou senha incorretos")
+        print("Retornando ao menu principal...")
+        input("\nPressione enter para continuar")
+        menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+    elif tentativa_login == "N/A":
+        print("\nLogin de convidado não aceito")
+        print("Retornando ao menu principal...")
+        input("\nPressione enter para continuar")
+        menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+    else:
+        while True:
+            try: 
+                opcao = input("\nBem vindo ao menu do administrador\nSelecione a opção desejada:\nOpção 1 - Alterar resposta de Dúvidas Frequentes\nOpção 2 - Excluir registro de histórico de busca de estações\nR: ")
+                if opcao in ["1", "2"]:
+                    break
+                else:
+                    raise ValueError
+
+            except ValueError:
+                input("\nOpção inválida! \nPressione enter para continuar.")
+        
+        if opcao == "1":
+            alterar_respostas()
+        elif opcao == "2":
+            excluir_registro()
+
+
+def alterar_respostas():
+    print("altera")
+
+
+def excluir_registro():
+    print("excluir")
 
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
