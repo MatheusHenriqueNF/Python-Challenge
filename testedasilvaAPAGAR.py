@@ -204,6 +204,11 @@ def ajuda_caminho(nome, origem_formatado, grafo, variaveldasilva):
 
         except ValueError:
             erro = input("\nOpção inválida! \nPressione enter para continuar.")
+    
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute("INSERT INTO C_Busca_Estacoes (Nome_Estacao_Busca, ID_Usuario) VALUES (:Nome_Estacao_Busca, 5)", {"Nome_Estacao_Busca": destino_formatado})
+            con.commit()
 
     caminho_mais_curto = nx.shortest_path(G, source=origem_formatado, target=destino_formatado, weight="weight")
 

@@ -204,6 +204,11 @@ def ajuda_caminho(nome, origem_formatado, grafo, variaveldasilva):
 
         except ValueError:
             erro = input("\nOpção inválida! \nPressione enter para continuar.")
+    
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute("INSERT INTO C_Busca_Estacoes (Nome_Estacao_Busca, ID_Usuario) VALUES (:Nome_Estacao_Busca, 5)", {"Nome_Estacao_Busca": destino_formatado})
+            con.commit()
 
     caminho_mais_curto = nx.shortest_path(G, source=origem_formatado, target=destino_formatado, weight="weight")
 
@@ -285,36 +290,49 @@ def duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasi
         with con.cursor() as cur:
             cur.execute("SELECT resposta from c_duvidas_frequentes WHERE pergunta = 'Horário de funcionamento'")
             slaeu = cur.fetchone()
-     print("\n"+slaeu[0]+"\n")
 
     elif duvida == "2":
      with get_conexao() as con:
         with con.cursor() as cur:
             cur.execute("SELECT resposta from c_duvidas_frequentes WHERE pergunta = 'Compra de bilhetes'")
             slaeu = cur.fetchone()
-     print("\n"+slaeu[0]+"\n")
 
     elif duvida == "3":
      with get_conexao() as con:
         with con.cursor() as cur:
             cur.execute("SELECT resposta from c_duvidas_frequentes WHERE pergunta = 'Frequência de Trens'")
             slaeu = cur.fetchone()
-     print("\n"+slaeu[0]+"\n")
 
     elif duvida == "4":
      with get_conexao() as con:
         with con.cursor() as cur:
             cur.execute("SELECT resposta from c_duvidas_frequentes WHERE pergunta = 'Opções de integração'")
             slaeu = cur.fetchone()
-     print("\n"+slaeu[0]+"\n")
 
     elif duvida == "5":
      with get_conexao() as con:
         with con.cursor() as cur:
             cur.execute("SELECT resposta from c_duvidas_frequentes WHERE pergunta = 'Atendimento ao Cliente'")
             slaeu = cur.fetchone()
-     print("\n"+slaeu[0]+"\n")
+    
+    print("\n"+slaeu[0]+"\n")
 
+    while True:
+        try:
+            pergunta_impressao = input("\nVocê deseja imprimir esta resposta?\n1 - Sim\n2 - Não\nR:")
+
+            if pergunta_impressao in ["1", "2"]:
+                break
+            else:
+                raise ValueError
+            
+        except ValueError:
+            input("\nOpção inválida!\nPressione enter para continuar.")
+
+    if pergunta_impressao == "1":
+        with open("resposta.json", mode="w", encoding="utf-8") as arquivo:
+            js.dump(slaeu, arquivo, indent=4, ensure_ascii=False)
+        print(f"\nSua resposta foi impressa, {nome}!")
 
     input("Pressione Enter para continuar.")  
 
