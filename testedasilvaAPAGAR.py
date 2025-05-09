@@ -90,7 +90,7 @@ def inicio():
         "Ana Rosa": {"Paraíso": 1, "Chácara Klabin": 1},
         "Chácara Klabin": {"Ana Rosa": 1, "Santos-Imigrantes": 1},
         "Santos-Imigrantes": {"Chácara Klabin": 1, "Alto do Ipiranga": 1},
-        "Alto do Ipiranga": {"Santos-Imigrantes": 1, "Sacomã": 1},
+        "Alto do Ipiranga": {"Santos-Imigrantes": 1, "Sacomã": 1}, #.
         "Sacomã": {"Alto do Ipiranga": 1, "Tamanduateí": 1},
         "Tamanduateí": {"Sacomã": 1, "Vila Prudente": 1},
         "Vila Prudente": {"Tamanduateí": 1},
@@ -516,7 +516,37 @@ def alterar_respostas(nome, origem_formatado, grafo, caminho_dict, variaveldasil
 
 
 def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
-    input("dale dele dele dolly")
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute("SELECT nome_estacao_busca FROM c_busca_estacoes ORDER BY id_busca")
+            captura_busca_estacoes = cur.fetchall()
+    lista_busca_estacoes = [item[0] for item in captura_busca_estacoes]
+
+    print("\nQual a busca que você deseja excluir?")
+    for i in lista_busca_estacoes:
+        print(f"{lista_busca_estacoes.index(i) + 1} - {i}")
+    
+    while True:
+        try:
+            opcao_pergunta = int(input("R: "))
+
+            if opcao_pergunta <= len(lista_busca_estacoes):
+                break
+            else:
+                raise ValueError
+        
+        except ValueError:
+            input("Opção inválida, pressione enter para continuar.")
+    
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute(f"DELETE FROM c_busca_estacoes WHERE id_busca = {opcao_pergunta}")
+            con.commit()
+            
+    print("\nA busca foi excluida com sucesso!")
+    print("\nVoltando ao menu principal...")
+    input("Pressione enter para continuar.") 
+
     menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
