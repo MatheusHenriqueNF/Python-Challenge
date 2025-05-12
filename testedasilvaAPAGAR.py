@@ -549,6 +549,24 @@ def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilv
 
     menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
+def teste():
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute("SELECT id_busca, nome_estacao_busca FROM c_busca_estacoes ORDER BY id_busca")
+            captura_busca_estacoes = cur.fetchall()
+
+    lista_busca = []
+
+    for i,j in captura_busca_estacoes:
+        slaeu = {i:j}
+        lista_busca.append(slaeu)
+    # print(lista_busca)
+
+    print("\nQual a busca que você deseja excluir?")
+    for i in lista_busca:
+        for chave,valor in i:
+            print(f"{chave} - {valor}")
+
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
     # *Função para executar a última pergunta ao cliente*
@@ -582,4 +600,4 @@ def encerrar(nome):
 
 
 if __name__ == "__main__":
-    inicio()
+    teste()
