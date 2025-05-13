@@ -2,6 +2,7 @@ import networkx as nx
 import json as js
 import random
 import oracledb
+import requests
 
 def get_conexao():
     return oracledb.connect(user="rm560485", password="fiap25", dsn="oracle.fiap.com.br/orcl")
@@ -499,7 +500,7 @@ def alterar_respostas(nome, origem_formatado, grafo, caminho_dict, variaveldasil
             lista_verificacao_perguntas.append(chave)
     
     print("\nVocê deseja alterar a resposta de qual pergunta?")
-    print("(As perguntas estão com seus id correspondentes, não está necessariamente por ordem numérica, se atente ao número)")
+    print("(As perguntas estão com seu id correspondente, não está necessariamente por ordem numérica, se atente ao número)")
     print("\n")
     
     for i in lista_perguntas:
@@ -572,7 +573,7 @@ def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilv
             lista_verificacao_busca.append(chave)
 
     print("\nQual a busca que você deseja excluir?")
-    print("(As estações estão com seus id correspondentes, não está necessariamente por ordem numérica, se atente ao número)")
+    print("(As buscas estão com seu id correspondente, não está necessariamente por ordem numérica, se atente ao número)")
     print("\n")
 
     for i in lista_busca:
@@ -599,6 +600,22 @@ def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilv
     input("\nRegistro de busca excluido com sucesso!\nPressione enter para continuar.") 
 
     menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+
+def teste_status_linha():
+    try:
+        resp = requests.get("https://www.diretodostrens.com.br/api/status")
+
+        if resp.status_code != 200:
+            raise Exception
+    
+    except Exception:
+        print(f"\nErro\nCódigo:{resp.status_code}")
+
+    
+    
+    # for i in resp.json():
+    #     print(i)
 
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):

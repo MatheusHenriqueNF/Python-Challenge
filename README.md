@@ -65,10 +65,10 @@ O trajeto pode ser exportado para um arquivo JSON chamado `caminho.json`, com a 
    - *Matheus Henrique Nascimento de Freitas*
    - *Matheus Pinheiro Ermacora Martins*
 - Universidade: FIAP
-- Contato: *[Seu email ou LinkedIn]*
+- Contato:
    - Cleyton: https://www.linkedin.com/in/cleyton-enrike-de-oliveira99/
    - Matheus Henrique: https://www.linkedin.com/in/matheus-henrique-freitas/
-   - Matheus Pinheiro: https://github.com/pinheiroosz
+   - Matheus Pinheiro: https://www.linkedin.com/in/pinheirodev
 
 ---
 
