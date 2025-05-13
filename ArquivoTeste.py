@@ -483,73 +483,77 @@ def login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
 def alterar_respostas(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
     with get_conexao() as con:
         with con.cursor() as cur:
-            cur.execute("SELECT pergunta FROM C_Duvidas_Frequentes")
+            cur.execute("SELECT id_duvida, pergunta FROM c_duvidas_frequentes ORDER BY id_duvida")
             captura_perguntas = cur.fetchall()
-    lista_perguntas = [item[0] for item in captura_perguntas]
+    
+    lista_perguntas = []
 
-    print("\nA resposta de qual pergunta você deseja alterar?")
+    for i,j in captura_perguntas:
+        slaeu = {i:j}
+        lista_perguntas.append(slaeu)
+
+    lista_verificacao_perguntas = []
+
     for i in lista_perguntas:
-        print(f"{lista_perguntas.index(i) + 1} - {i}")
-
+        for chave in i.keys():
+            lista_verificacao_perguntas.append(chave)
+    
+    print("\nVocê deseja alterar a resposta de qual pergunta?")
+    print("(As perguntas estão com seus id correspondentes, não está necessariamente por ordem numérica, se atente ao número)")
+    print("\n")
+    
+    for i in lista_perguntas:
+        for chave,valor in i.items():
+            print(f"{chave} - {valor}")
+    
     while True:
         try:
-            opcao_pergunta = int(input("R: "))
+            opcao = int(input("R: "))
 
-            if opcao_pergunta <= len(lista_perguntas):
+            if opcao in lista_verificacao_perguntas:
                 break
             else:
                 raise ValueError
         
         except ValueError:
-            input("Opção inválida, pressione enter para continuar.")
+            input("Opção inválida, digite um ID existente\nPressione enter para continuar.")
     
-    resposta_nova = input("\nEscreva a nova resposta da pergunta\nR: ")
+    while True:
+        try:
+            opcao_ver_resposta = input("\nVocê deseja ver a resposta atual dessa pergunta?\n1 - Sim\n2 - Não\nR: ").strip()
+
+            if opcao_ver_resposta in ["1", "2"]:
+                break
+            else:
+                raise ValueError
+        
+        except ValueError:
+            input("Opção inválida, digite uma opção existente\nPressione enter para continuar.")
+    
+    if opcao_ver_resposta == "1":
+        with get_conexao() as con:
+            with con.cursor() as cur:
+                cur.execute(f"SELECT resposta FROM c_duvidas_frequentes WHERE id_duvida = {opcao}")
+                resposta_atual = cur.fetchone()
+        
+        for i in resposta_atual:
+            print(f"\nA resposta atual é:\n{i}")
+        
+        input("\nPressione enter para continuar.")
+
+    resposta_nova = input("\nDigite a nova resposta da pergunta\nR: ").strip().capitalize()
 
     with get_conexao() as con:
         with con.cursor() as cur:
-            cur.execute(f"UPDATE C_Duvidas_Frequentes SET resposta = '{resposta_nova}' WHERE id_duvida = {opcao_pergunta}")
+            cur.execute(f"UPDATE C_Duvidas_Frequentes SET resposta = '{resposta_nova}' WHERE id_duvida = {opcao}")
             con.commit()
-    print("\nA resposta foi alterada com sucesso!")
-    print("\nVoltando ao menu principal...")
-    input("Pressione enter para continuar.")
+
+    input("\nResposta alterada com sucesso!\nPressione enter para continuar.")
+
     menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
 def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
-    with get_conexao() as con:
-        with con.cursor() as cur:
-            cur.execute("SELECT nome_estacao_busca FROM c_busca_estacoes ORDER BY id_busca")
-            captura_busca_estacoes = cur.fetchall()
-    lista_busca_estacoes = [item[0] for item in captura_busca_estacoes]
-
-    print("\nQual a busca que você deseja excluir?")
-    for i in lista_busca_estacoes:
-        print(f"{lista_busca_estacoes.index(i) + 1} - {i}")
-    
-    while True:
-        try:
-            opcao_pergunta = int(input("R: "))
-
-            if opcao_pergunta <= len(lista_busca_estacoes):
-                break
-            else:
-                raise ValueError
-        
-        except ValueError:
-            input("Opção inválida, pressione enter para continuar.")
-    
-    with get_conexao() as con:
-        with con.cursor() as cur:
-            cur.execute(f"DELETE FROM c_busca_estacoes WHERE id_busca = {opcao_pergunta}")
-            con.commit()
-            
-    print("\nA busca foi excluida com sucesso!")
-    print("\nVoltando ao menu principal...")
-    input("Pressione enter para continuar.") 
-
-    menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
-
-def teste():
     with get_conexao() as con:
         with con.cursor() as cur:
             cur.execute("SELECT id_busca, nome_estacao_busca FROM c_busca_estacoes ORDER BY id_busca")
@@ -560,12 +564,41 @@ def teste():
     for i,j in captura_busca_estacoes:
         slaeu = {i:j}
         lista_busca.append(slaeu)
-    # print(lista_busca)
+
+    lista_verificacao_busca = []
+
+    for i in lista_busca:
+        for chave in i.keys():
+            lista_verificacao_busca.append(chave)
 
     print("\nQual a busca que você deseja excluir?")
+    print("(As estações estão com seus id correspondentes, não está necessariamente por ordem numérica, se atente ao número)")
+    print("\n")
+
     for i in lista_busca:
-        for chave,valor in i:
+        for chave,valor in i.items():
             print(f"{chave} - {valor}")
+    
+    while True:
+        try:
+            opcao = int(input("R: "))
+
+            if opcao in lista_verificacao_busca:
+                break
+            else:
+                raise ValueError
+        
+        except ValueError:
+            input("Opção inválida, digite um ID existente\nPressione enter para continuar.")
+    
+    with get_conexao() as con:
+        with con.cursor() as cur:
+            cur.execute(f"DELETE FROM c_busca_estacoes WHERE id_busca = {opcao}")
+            con.commit()
+    
+    input("\nRegistro de busca excluido com sucesso!\nPressione enter para continuar.") 
+
+    menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
@@ -600,4 +633,4 @@ def encerrar(nome):
 
 
 if __name__ == "__main__":
-    teste()
+    inicio()
