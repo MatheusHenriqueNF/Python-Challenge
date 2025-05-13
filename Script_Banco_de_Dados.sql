@@ -604,6 +604,7 @@ WHERE
 
 
 
+-- EXCLUIR --
 /*
 BEGIN
   FOR t IN (
