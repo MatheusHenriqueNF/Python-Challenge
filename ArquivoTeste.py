@@ -611,11 +611,30 @@ def teste_status_linha():
     
     except Exception:
         print(f"\nErro\nCódigo:{resp.status_code}")
+    
+    # resp.json é uma lista de dicionarios, cada dicionario é uma linha
+    # só a linha com Velocidade Reduzida tem o valor 'descricao'
 
-    
-    
-    # for i in resp.json():
-    #     print(i)
+    # print(resp.json())
+
+    lista_verificacao_situacao = ['codigo', 'descricao', 'situacao']
+
+    lista_captura_situacao = []
+
+    # for dicionarios in resp.json():
+    #     print(dicionarios)
+
+    for dicionarios in resp.json():
+        # for chave,valor in dicionarios.items():
+
+        if lista_verificacao_situacao in dicionarios:
+            variavel_captura = {chave:valor}
+            lista_captura_situacao.append(variavel_captura)
+
+        else:
+            continue
+
+    print(lista_captura_situacao)
 
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
@@ -650,4 +669,4 @@ def encerrar(nome):
 
 
 if __name__ == "__main__":
-    inicio()
+    teste_status_linha()
