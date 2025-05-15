@@ -603,38 +603,120 @@ def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilv
 
 
 def teste_status_linha():
-    try:
-        resp = requests.get("https://www.diretodostrens.com.br/api/status")
 
-        if resp.status_code != 200:
-            raise Exception
+    resp = [
+    {
+        "codigo": 1,
+        "criado": "2025-05-15T07:41:02.314411Z",
+        "id": 6006065585979392,
+        "modificado": "2025-05-15T10:51:02.400230Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 2,
+        "criado": "2025-05-15T07:41:02.341634Z",
+        "id": 6312013152124928,
+        "modificado": "2025-05-15T10:51:02.405198Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 3,
+        "criado": "2025-05-15T08:34:02.544421Z",
+        "id": 6030538175414272,
+        "modificado": "2025-05-15T10:51:02.410226Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 4,
+        "criado": "2025-05-15T07:42:02.262297Z",
+        "id": 4904638268571648,
+        "modificado": "2025-05-15T10:51:02.581843Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 5,
+        "criado": "2025-05-15T07:42:02.269823Z",
+        "id": 6045969154048000,
+        "modificado": "2025-05-15T10:51:02.600591Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 7,
+        "criado": "2025-05-15T07:01:02.519760Z",
+        "id": 6572446245191680,
+        "modificado": "2025-05-15T10:51:02.285023Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 8,
+        "criado": "2025-05-15T07:03:02.358604Z",
+        "id": 4848772689428480,
+        "modificado": "2025-05-15T10:51:02.606011Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 9,
+        "criado": "2025-05-15T07:03:02.388352Z",
+        "id": 5609940483833856,
+        "modificado": "2025-05-15T10:51:02.611112Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 10,
+        "criado": "2025-05-15T07:01:02.547133Z",
+        "id": 6226857338863616,
+        "modificado": "2025-05-15T10:51:02.290367Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 11,
+        "criado": "2025-05-15T07:01:02.592962Z",
+        "descricao": "Devido à manutenção de ponte ferroviária da linha 11 Coral, estamos com alterações na circulação dos trens, com maiores intervalos entre as estações Suzano e Estudantes.",
+        "id": 4880165679136768,
+        "modificado": "2025-05-15T10:51:02.295479Z",
+        "situacao": "Velocidade Reduzida"
+    },
+    {
+        "codigo": 12,
+        "criado": "2025-05-15T07:01:02.670838Z",
+        "id": 6172890437255168,
+        "modificado": "2025-05-15T10:51:02.306147Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 13,
+        "criado": "2025-05-15T07:01:02.697883Z",
+        "id": 6575955904561152,
+        "modificado": "2025-05-15T10:51:02.362106Z",
+        "situacao": "Operação Normal"
+    },
+    {
+        "codigo": 15,
+        "criado": "2025-05-15T07:41:02.479248Z",
+        "id": 6735840390676480,
+        "modificado": "2025-05-15T10:51:02.415135Z",
+        "situacao": "Operação Normal"
+    }
+    ]
+
+    # try:
+    #     resp = requests.get("https://www.diretodostrens.com.br/api/status")
+
+    #     if resp.status_code != 200:
+    #         raise Exception
     
-    except Exception:
-        print(f"\nErro\nCódigo:{resp.status_code}")
+    # except Exception:
+    #     print(f"\nErro\nCódigo:{resp.status_code}")
     
-    # resp.json é uma lista de dicionarios, cada dicionario é uma linha
+    # resp.json é uma lista de dicionarios, cada dicionario é uma linha de metro
     # só a linha com Velocidade Reduzida tem o valor 'descricao'
 
-    # print(resp.json())
-
-    lista_verificacao_situacao = ['codigo', 'descricao', 'situacao']
-
-    lista_captura_situacao = []
-
-    # for dicionarios in resp.json():
-    #     print(dicionarios)
-
-    for dicionarios in resp.json():
-        # for chave,valor in dicionarios.items():
-
-        if lista_verificacao_situacao in dicionarios:
-            variavel_captura = {chave:valor}
-            lista_captura_situacao.append(variavel_captura)
-
-        else:
-            continue
-
-    print(lista_captura_situacao)
+    for dicionarios in resp:
+        dicionarios.pop('id')
+        dicionarios.pop('criado')
+        dicionarios.pop('modificado')
+    
+    print(resp)
 
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
