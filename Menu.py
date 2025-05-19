@@ -661,7 +661,7 @@ def status_linha(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
             if not dicionarios.get("descricao"):
                 print(f"\nA situação atual da linha {dicionarios.get("codigo")} é: {dicionarios.get("situacao")}")
             else:
-                print(f"\nA situação atual desta linha é: {dicionarios.get("situacao")}\nDescrição: {dicionarios.get("descricao")}")
+                print(f"\nA situação atual da linha {dicionarios.get("codigo")} é: {dicionarios.get("situacao")}\nDescrição: {dicionarios.get("descricao")}")
     
     input("\nPressione enter para continuar.")
 
