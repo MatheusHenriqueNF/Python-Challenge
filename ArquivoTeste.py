@@ -141,9 +141,9 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
     if variaveldasilva == 0:
         while True: 
             try:
-                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Realizar login (APENAS PARA FUNCIONÁRIOS) \nOpção 5: Encerrar atendimento\n \nQual opção gostaria?: ")
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Realizar login (APENAS PARA FUNCIONÁRIOS) \nOpção 5: Verificar Status das linhas\nOpção 6: Encerrar atendimento\n \nQual opção gostaria?: ")
             
-                if opcao in ["1", "2", "3", "4", "5"]:
+                if opcao in ["1", "2", "3", "4", "5", "6"]:
                     break
                 else:
                     raise ValueError
@@ -157,16 +157,18 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "3":
                 duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "4":
-                login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+                login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "5":
+                status_linha(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+        elif opcao == "6":
                 encerrar(nome)
 
     else:
         while True: 
             try:
-                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho \nOpção 5: Realizar login (APENAS PARA FUNCIONÁRIOS)\nOpção 6: Encerrar atendimento \n \nQual opção gostaria?: ")
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho \nOpção 5: Realizar login (APENAS PARA FUNCIONÁRIOS)\nOpção 6: Verificar Status das linhas \nOpção 7: Encerrar atendimento \n \nQual opção gostaria?: ")
             
-                if opcao in ["1", "2", "3", "4", "5", "6"]:
+                if opcao in ["1", "2", "3", "4", "5", "6", "7"]:
                     break
                 else:
                     raise ValueError
@@ -184,6 +186,8 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "5":
                 login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "6":
+                status_linha(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+        elif opcao == "7":
                 encerrar(nome)
     
 
@@ -602,121 +606,66 @@ def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilv
     menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
-def teste_status_linha():
+def status_linha(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
 
-    resp = [
-    {
-        "codigo": 1,
-        "criado": "2025-05-15T07:41:02.314411Z",
-        "id": 6006065585979392,
-        "modificado": "2025-05-15T10:51:02.400230Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 2,
-        "criado": "2025-05-15T07:41:02.341634Z",
-        "id": 6312013152124928,
-        "modificado": "2025-05-15T10:51:02.405198Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 3,
-        "criado": "2025-05-15T08:34:02.544421Z",
-        "id": 6030538175414272,
-        "modificado": "2025-05-15T10:51:02.410226Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 4,
-        "criado": "2025-05-15T07:42:02.262297Z",
-        "id": 4904638268571648,
-        "modificado": "2025-05-15T10:51:02.581843Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 5,
-        "criado": "2025-05-15T07:42:02.269823Z",
-        "id": 6045969154048000,
-        "modificado": "2025-05-15T10:51:02.600591Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 7,
-        "criado": "2025-05-15T07:01:02.519760Z",
-        "id": 6572446245191680,
-        "modificado": "2025-05-15T10:51:02.285023Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 8,
-        "criado": "2025-05-15T07:03:02.358604Z",
-        "id": 4848772689428480,
-        "modificado": "2025-05-15T10:51:02.606011Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 9,
-        "criado": "2025-05-15T07:03:02.388352Z",
-        "id": 5609940483833856,
-        "modificado": "2025-05-15T10:51:02.611112Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 10,
-        "criado": "2025-05-15T07:01:02.547133Z",
-        "id": 6226857338863616,
-        "modificado": "2025-05-15T10:51:02.290367Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 11,
-        "criado": "2025-05-15T07:01:02.592962Z",
-        "descricao": "Devido à manutenção de ponte ferroviária da linha 11 Coral, estamos com alterações na circulação dos trens, com maiores intervalos entre as estações Suzano e Estudantes.",
-        "id": 4880165679136768,
-        "modificado": "2025-05-15T10:51:02.295479Z",
-        "situacao": "Velocidade Reduzida"
-    },
-    {
-        "codigo": 12,
-        "criado": "2025-05-15T07:01:02.670838Z",
-        "id": 6172890437255168,
-        "modificado": "2025-05-15T10:51:02.306147Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 13,
-        "criado": "2025-05-15T07:01:02.697883Z",
-        "id": 6575955904561152,
-        "modificado": "2025-05-15T10:51:02.362106Z",
-        "situacao": "Operação Normal"
-    },
-    {
-        "codigo": 15,
-        "criado": "2025-05-15T07:41:02.479248Z",
-        "id": 6735840390676480,
-        "modificado": "2025-05-15T10:51:02.415135Z",
-        "situacao": "Operação Normal"
-    }
-    ]
+    try:
+        resp = requests.get("https://www.diretodostrens.com.br/api/status")
 
-    # try:
-    #     resp = requests.get("https://www.diretodostrens.com.br/api/status")
-
-    #     if resp.status_code != 200:
-    #         raise Exception
+        if resp.status_code != 200:
+            raise Exception
     
-    # except Exception:
-    #     print(f"\nErro\nCódigo:{resp.status_code}")
+    except Exception:
+        print(f"\nErro\nCódigo:{resp.status_code}")
     
     # resp.json é uma lista de dicionarios, cada dicionario é uma linha de metro
     # só a linha com Velocidade Reduzida tem o valor 'descricao'
 
-    for dicionarios in resp:
+    lista_captura_dicionarios = []
+
+    for dicionarios in resp.json():
+        lista_captura_dicionarios.append(dicionarios)
+
+    for dicionarios in lista_captura_dicionarios:
         dicionarios.pop('id')
         dicionarios.pop('criado')
         dicionarios.pop('modificado')
+
+    while True:
+        try:
+            opcao = int(input("\nSobre qual linha do metro você quer saber?\nLinha - 1 (Azul)\nLinha - 2 (Verde)\nLinha - 3 (Vermelha)\nLinha - 4 (Amarela)\nLinha - 5 (Lilás)\nLinha - 7 (Rubi)\nLinha - 8 (Diamante)\nLinha - 9 (Esmeralda)\nLinha - 10 (Turquesa)\nLinha - 11 (Coral)\nLinha - 12 (Safira)\nLinha - 13 (Jade)\nLinha - 15 (Prata)\nPARA TODAS AS LINHAS, DIGITE 0\nR: "))
+
+            if opcao in [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 15]:
+                break
+            else:
+                raise ValueError
+        
+        except ValueError:
+            input("\nOpção inválida, digite o numero de uma linha existente\nPressione enter para continuar.")
     
-    print(resp)
+    for dicionarios in lista_captura_dicionarios:
+
+        if opcao != 0:
+
+            if dicionarios.get("codigo") == opcao:
+                
+                if not dicionarios.get("descricao"):
+                    print(f"\nA situação atual desta linha é: {dicionarios.get("situacao")}")
+                else:
+                    print(f"\nA situação atual desta linha é: {dicionarios.get("situacao")}\nDescrição: {dicionarios.get("descricao")}")
+
+            else:
+                continue
+        
+        elif opcao == 0:
+
+            if not dicionarios.get("descricao"):
+                print(f"\nA situação atual da linha {dicionarios.get("codigo")} é: {dicionarios.get("situacao")}")
+            else:
+                print(f"\nA situação atual desta linha é: {dicionarios.get("situacao")}\nDescrição: {dicionarios.get("descricao")}")
+    
+    input("\nPressione enter para continuar.")
+
+    menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
 
 def pergunta(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
@@ -751,4 +700,4 @@ def encerrar(nome):
 
 
 if __name__ == "__main__":
-    teste_status_linha()
+    inicio()

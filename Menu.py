@@ -2,6 +2,7 @@ import networkx as nx
 import json as js
 import random
 import oracledb
+import requests
 
 def get_conexao():
     return oracledb.connect(user="rm560485", password="fiap25", dsn="oracle.fiap.com.br/orcl")
@@ -140,9 +141,9 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
     if variaveldasilva == 0:
         while True: 
             try:
-                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Realizar login (APENAS PARA FUNCIONÁRIOS) \nOpção 5: Encerrar atendimento\n \nQual opção gostaria?: ")
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Realizar login (APENAS PARA FUNCIONÁRIOS) \nOpção 5: Verificar Status das linhas\nOpção 6: Encerrar atendimento\n \nQual opção gostaria?: ")
             
-                if opcao in ["1", "2", "3", "4", "5"]:
+                if opcao in ["1", "2", "3", "4", "5", "6"]:
                     break
                 else:
                     raise ValueError
@@ -156,16 +157,18 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "3":
                 duvidas_frequentes(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "4":
-                login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+                login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "5":
+                status_linha(nome, origem_formatado, grafo, caminho_dict, variaveldasilva) 
+        elif opcao == "6":
                 encerrar(nome)
 
     else:
         while True: 
             try:
-                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho \nOpção 5: Realizar login (APENAS PARA FUNCIONÁRIOS)\nOpção 6: Encerrar atendimento \n \nQual opção gostaria?: ")
+                opcao = input(f"\nBem vindo, {nome}! \nSelecione a opção que corresponde a sua dúvida \n \nOpção 1: Ajuda com qual caminho seguir \nOpção 2: Dúvida sobre lotação dos vagões \nOpção 3: Dúvidas frequentes \nOpção 4: Editar caminho \nOpção 5: Realizar login (APENAS PARA FUNCIONÁRIOS)\nOpção 6: Verificar Status das linhas \nOpção 7: Encerrar atendimento \n \nQual opção gostaria?: ")
             
-                if opcao in ["1", "2", "3", "4", "5", "6"]:
+                if opcao in ["1", "2", "3", "4", "5", "6", "7"]:
                     break
                 else:
                     raise ValueError
@@ -183,6 +186,8 @@ def menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "5":
                 login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
         elif opcao == "6":
+                status_linha(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+        elif opcao == "7":
                 encerrar(nome)
     
 
@@ -499,7 +504,7 @@ def alterar_respostas(nome, origem_formatado, grafo, caminho_dict, variaveldasil
             lista_verificacao_perguntas.append(chave)
     
     print("\nVocê deseja alterar a resposta de qual pergunta?")
-    print("(As perguntas estão com seus id correspondentes, não está necessariamente por ordem numérica, se atente ao número)")
+    print("(As perguntas estão com seu id correspondente, não está necessariamente por ordem numérica, se atente ao número)")
     print("\n")
     
     for i in lista_perguntas:
@@ -572,7 +577,7 @@ def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilv
             lista_verificacao_busca.append(chave)
 
     print("\nQual a busca que você deseja excluir?")
-    print("(As estações estão com seus id correspondentes, não está necessariamente por ordem numérica, se atente ao número)")
+    print("(As buscas estão com seu id correspondente, não está necessariamente por ordem numérica, se atente ao número)")
     print("\n")
 
     for i in lista_busca:
@@ -597,6 +602,68 @@ def excluir_registro(nome, origem_formatado, grafo, caminho_dict, variaveldasilv
             con.commit()
     
     input("\nRegistro de busca excluido com sucesso!\nPressione enter para continuar.") 
+
+    menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
+
+
+def status_linha(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
+
+    try:
+        resp = requests.get("https://www.diretodostrens.com.br/api/status")
+
+        if resp.status_code != 200:
+            raise Exception
+    
+    except Exception:
+        print(f"\nErro\nCódigo:{resp.status_code}")
+    
+    # resp.json é uma lista de dicionarios, cada dicionario é uma linha de metro
+    # só a linha com Velocidade Reduzida tem o valor 'descricao'
+
+    lista_captura_dicionarios = []
+
+    for dicionarios in resp.json():
+        lista_captura_dicionarios.append(dicionarios)
+
+    for dicionarios in lista_captura_dicionarios:
+        dicionarios.pop('id')
+        dicionarios.pop('criado')
+        dicionarios.pop('modificado')
+
+    while True:
+        try:
+            opcao = int(input("\nSobre qual linha do metro você quer saber?\nLinha - 1 (Azul)\nLinha - 2 (Verde)\nLinha - 3 (Vermelha)\nLinha - 4 (Amarela)\nLinha - 5 (Lilás)\nLinha - 7 (Rubi)\nLinha - 8 (Diamante)\nLinha - 9 (Esmeralda)\nLinha - 10 (Turquesa)\nLinha - 11 (Coral)\nLinha - 12 (Safira)\nLinha - 13 (Jade)\nLinha - 15 (Prata)\nPARA TODAS AS LINHAS, DIGITE 0\nR: "))
+
+            if opcao in [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 15]:
+                break
+            else:
+                raise ValueError
+        
+        except ValueError:
+            input("\nOpção inválida, digite o numero de uma linha existente\nPressione enter para continuar.")
+    
+    for dicionarios in lista_captura_dicionarios:
+
+        if opcao != 0:
+
+            if dicionarios.get("codigo") == opcao:
+                
+                if not dicionarios.get("descricao"):
+                    print(f"\nA situação atual desta linha é: {dicionarios.get("situacao")}")
+                else:
+                    print(f"\nA situação atual desta linha é: {dicionarios.get("situacao")}\nDescrição: {dicionarios.get("descricao")}")
+
+            else:
+                continue
+        
+        elif opcao == 0:
+
+            if not dicionarios.get("descricao"):
+                print(f"\nA situação atual da linha {dicionarios.get("codigo")} é: {dicionarios.get("situacao")}")
+            else:
+                print(f"\nA situação atual desta linha é: {dicionarios.get("situacao")}\nDescrição: {dicionarios.get("descricao")}")
+    
+    input("\nPressione enter para continuar.")
 
     menu_principal(nome, origem_formatado, grafo, caminho_dict, variaveldasilva)
 
