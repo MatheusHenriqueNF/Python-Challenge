@@ -449,8 +449,8 @@ def login(nome, origem_formatado, grafo, caminho_dict, variaveldasilva):
     lista_login = [item[0] for item in captura_login]
     lista_senha = [item[0] for item in captura_senha]
 
-    print(lista_login)
-    print(lista_senha)
+    print(f"Lista de Logins: {lista_login}")
+    print(f"Lista de Senhas: {lista_senha}")
 
     tentativa_login = input("Login: ").strip()
     tentativa_senha = input("Senha: ").strip()
