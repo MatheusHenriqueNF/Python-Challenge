@@ -11,7 +11,8 @@ CREATE TABLE C_duvidas_frequentes(
     Pergunta VARCHAR2(100) NOT NULL,
     Resposta VARCHAR2(800),
     ID_Usuario NUMBER(11),
-    ID_Idioma NUMBER(11)
+    ID_Idioma NUMBER(11),
+    Status CHAR(1) NOT NULL
 );
 
 CREATE TABLE C_Idioma(
@@ -25,7 +26,7 @@ CREATE TABLE C_Usuario(
     Login VARCHAR2(20) NOT NULL UNIQUE,
     Senha VARCHAR2(255) NOT NULL,
     Cargo VARCHAR2(30) NOT NULL,
-    Status VARCHAR2(10) NOT NULL
+    Status CHAR(1) NOT NULL
 );
 
 CREATE TABLE C_Estacoes(
@@ -70,11 +71,11 @@ ALTER TABLE C_Estacao_Linha ADD CONSTRAINT FK_ID_Linha FOREIGN KEY (ID_Linha) RE
 ALTER TABLE C_Busca_Estacoes ADD CONSTRAINT FK_ID_USUARIO_BUSCA FOREIGN KEY (ID_Usuario) REFERENCES C_Usuario(ID_Usuario);
 
 -- 3-) Inserts nas tabelas --
-INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('ES@5948', '193420', 'Engenheiro de Sistemas', 'Ativo');
-INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('CT@4078', '496305', 'Controlador de Trafego', 'Ativo');
-INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('SO@1904', '104863', 'Supervisor de Operacoes', 'Ativo');
-INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('CCO@1468', '702357', 'Operador de Centro de Controle', 'Ativo');
-INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('N/A', 'N/A', 'Convidado', 'Ativo');
+INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('ES@5948', '193420', 'Engenheiro de Sistemas', '1');
+INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('CT@4078', '496305', 'Controlador de Trafego', '1');
+INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('SO@1904', '104863', 'Supervisor de Operacoes', '1');
+INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('CCO@1468', '702357', 'Operador de Centro de Controle', '1');
+INSERT INTO C_Usuario (Login, Senha, Cargo, Status) VALUES ('N/A', 'N/A', 'Convidado', '1');
 
 INSERT INTO C_Busca_Estacoes (Nome_Estacao_Busca, ID_Usuario) VALUES ('Jurubatuba', 5);
 INSERT INTO C_Busca_Estacoes (Nome_Estacao_Busca, ID_Usuario) VALUES ('Armênia', 5);
@@ -102,11 +103,11 @@ INSERT INTO C_Idioma (Idioma, ID_Usuario) VALUES ('Espanhol', 1);
 INSERT INTO C_Idioma (Idioma, ID_Usuario) VALUES ('Francês', 1);
 INSERT INTO C_Idioma (Idioma, ID_Usuario) VALUES ('Chinês Mandarim', 1);
 
-INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma) VALUES ('Horário de funcionamento', 'Horário Geral: Das 4h até às 23:59 Observações: - Este horário pode ser prolongado em ocasiões especiais - Em feriados, este horário pode ser reduzido', 1, 1);
-INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma) VALUES ('Compra de bilhetes', 'Tarifa: - A tarifa é de R$5, mas pode sofrer alteraçõs em casos de reajuste Como Comprar Passagens: - Máquinas Automáticas: Disponíveis em todas as estações, permitem a compra de bilhetes. - Bilheteiras: Algumas estações possuem bilheteiras onde você pode comprar passagens diretamente com uma pessoa', 1, 1);
-INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma) VALUES ('Frequência de Trens', 'Linha 7-Rubi: Intervalos de 6 a 15 minutos, dependendo do horário.Linha 8-Diamante: Pode variar entre 5 a 12 minutos.Linha 9-Esmeralda: Intervalos menores durante o pico, entre 4 e 8 minutos.Linha 10-Turquesa: Intervalos variam entre 5 a 12 minutos.Linha 11-Coral: Uma das mais movimentadas, com intervalos menores nos horários de pico, cerca de 3 a 6 minutos.Linha 12-Safira: Intervalos variam de 5 a 15 minutos, dependendo do horário.Linha 13-Jade: Frequência menor, com intervalos que podem chegar a 20 ou 30 minutos, principalmente fora dos horários de pico. Para ter uma informação mais aproximada da chegada do seu trem, volte no nosso menu principal e selecione a opção 2', 1, 1);
-INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma) VALUES ('Opções de integração', 'Bilhete Único: Integração com ônibus municipais da SPTrans e com o Metrô, permitindo combinações entre os meios de transporte pagando uma tarifa reduzida.Metrô: Integração direta com as linhas do Metrô nas estações Brás, Luz, Tatuapé, Barra Funda e Santo Amaro.Ônibus Intermunicipais (EMTU): Algumas estações da CPTM oferecem integração com linhas de ônibus intermunicipais gerenciadas pela EMTU, especialmente nas regiões metropolitanas.Ciclovias e Bicicletários: Várias estações oferecem bicicletários gratuitos, além de ciclovias conectadas a algumas estações, facilitando a integração bicicleta-trem.Trens Metropolitanos: A Linha 13-Jade tem integração com o Aeroporto de Guarulhos, facilitando o transporte para a região aeroportuária.', 1, 1);
-INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma) VALUES ('Atendimento ao Cliente', 'Central de Atendimento: Disponível pelo telefone 0800-055-0121, funcionando 24 horas por dia para dúvidas, sugestões ou reclamações.Fale Conosco: Formulário disponível no site oficial da CPTM para contato direto com o serviço de atendimento ao cliente.Ouvidoria: Para casos que necessitam de uma resolução mais específica ou reclamações formais, a ouvidoria pode ser acessada pelo telefone ou pela internet.Redes Sociais: A CPTM também oferece atendimento ao cliente e informações em tempo real através de suas contas oficiais no Twitter e Facebook.Postos de Atendimento Presencial: Algumas estações possuem postos físicos de atendimento ao cliente para resolver questões relacionadas a bilhete e informações gerais.', 1, 1);
+INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma, Status) VALUES ('Horário de funcionamento', 'Horário Geral: Das 4h até às 23:59 Observações: - Este horário pode ser prolongado em ocasiões especiais - Em feriados, este horário pode ser reduzido', 1, 1, '1');
+INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma, Status) VALUES ('Compra de bilhetes', 'Tarifa: - A tarifa é de R$5, mas pode sofrer alteraçõs em casos de reajuste Como Comprar Passagens: - Máquinas Automáticas: Disponíveis em todas as estações, permitem a compra de bilhetes. - Bilheteiras: Algumas estações possuem bilheteiras onde você pode comprar passagens diretamente com uma pessoa', 1, 1, '1');
+INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma, Status) VALUES ('Frequência de Trens', 'Linha 7-Rubi: Intervalos de 6 a 15 minutos, dependendo do horário.Linha 8-Diamante: Pode variar entre 5 a 12 minutos.Linha 9-Esmeralda: Intervalos menores durante o pico, entre 4 e 8 minutos.Linha 10-Turquesa: Intervalos variam entre 5 a 12 minutos.Linha 11-Coral: Uma das mais movimentadas, com intervalos menores nos horários de pico, cerca de 3 a 6 minutos.Linha 12-Safira: Intervalos variam de 5 a 15 minutos, dependendo do horário.Linha 13-Jade: Frequência menor, com intervalos que podem chegar a 20 ou 30 minutos, principalmente fora dos horários de pico. Para ter uma informação mais aproximada da chegada do seu trem, volte no nosso menu principal e selecione a opção 2', 1, 1, '1');
+INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma, Status) VALUES ('Opções de integração', 'Bilhete Único: Integração com ônibus municipais da SPTrans e com o Metrô, permitindo combinações entre os meios de transporte pagando uma tarifa reduzida.Metrô: Integração direta com as linhas do Metrô nas estações Brás, Luz, Tatuapé, Barra Funda e Santo Amaro.Ônibus Intermunicipais (EMTU): Algumas estações da CPTM oferecem integração com linhas de ônibus intermunicipais gerenciadas pela EMTU, especialmente nas regiões metropolitanas.Ciclovias e Bicicletários: Várias estações oferecem bicicletários gratuitos, além de ciclovias conectadas a algumas estações, facilitando a integração bicicleta-trem.Trens Metropolitanos: A Linha 13-Jade tem integração com o Aeroporto de Guarulhos, facilitando o transporte para a região aeroportuária.', 1, 1, '1');
+INSERT INTO C_duvidas_frequentes (Pergunta, Resposta, ID_Usuario, ID_Idioma, Status) VALUES ('Atendimento ao Cliente', 'Central de Atendimento: Disponível pelo telefone 0800-055-0121, funcionando 24 horas por dia para dúvidas, sugestões ou reclamações.Fale Conosco: Formulário disponível no site oficial da CPTM para contato direto com o serviço de atendimento ao cliente.Ouvidoria: Para casos que necessitam de uma resolução mais específica ou reclamações formais, a ouvidoria pode ser acessada pelo telefone ou pela internet.Redes Sociais: A CPTM também oferece atendimento ao cliente e informações em tempo real através de suas contas oficiais no Twitter e Facebook.Postos de Atendimento Presencial: Algumas estações possuem postos físicos de atendimento ao cliente para resolver questões relacionadas a bilhete e informações gerais.', 1, 1, '1');
 
 
 -- Linha 1 - Azul --
@@ -576,13 +577,12 @@ WHERE
             E.Nome_estacao = 'Sé'
     );
 
-*/
+
 
 
 
 
 -- EXCLUIR --
-/*
 BEGIN
   FOR t IN (
     SELECT table_name 
